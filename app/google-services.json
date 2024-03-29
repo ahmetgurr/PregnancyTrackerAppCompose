@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "607777903144",
+    "project_id": "pregancytracker",
+    "storage_bucket": "pregancytracker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:607777903144:android:ffd518a964497f13879b1d",
+        "android_client_info": {
+          "package_name": "com.ahmetgur.pregnancytracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3tQcUDkJe5ABtDmFxdtRSCm0ct1VkpkY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
