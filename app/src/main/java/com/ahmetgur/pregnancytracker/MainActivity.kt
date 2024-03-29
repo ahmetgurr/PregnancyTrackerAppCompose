@@ -17,6 +17,7 @@ import com.ahmetgur.pregnancytracker.ui.theme.PregnancyTrackerTheme
 import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel
 import com.ahmetgur.pregnancytracker.screen.LoginScreen
 import com.ahmetgur.pregnancytracker.screen.RegisterScreen
+import com.ahmetgur.pregnancytracker.screen.ResetScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -50,21 +51,28 @@ fun NavigationGraph(
         composable(Screen.RegisterScreen.route){
             RegisterScreen(
                 authViewModel = authViewModel,
-                onNavigateToLogin = {
-                    navController.navigate(Screen.LoginScreen.route)
-                })
+                onNavigateToLogin = { navController.navigate(Screen.LoginScreen.route)}
+            )
         }
         composable(Screen.LoginScreen.route){
             LoginScreen(
                 authViewModel = authViewModel,
-                onNavigateToSignUp = { navController.navigate(Screen.RegisterScreen.route) }
+                onNavigateToSignUp = { navController.navigate(Screen.RegisterScreen.route) },
+                onNavigateToReset = { navController.navigate(Screen.ResetScreen.route) }
             ){
                 navController.navigate(Screen.RegisterScreen.route)
             }
         }
+        composable(Screen.ResetScreen.route){
+            ResetScreen(
+                //authViewModel = authViewModel,
+                onNavigateToLogin = { navController.navigate(Screen.RegisterScreen.route) }
+            )
+        }
 
     }
 }
+
 
 /*
 
