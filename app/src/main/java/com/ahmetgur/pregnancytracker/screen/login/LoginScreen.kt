@@ -92,7 +92,7 @@ fun LoginScreen(
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Forgot Password?") },
+            label = { Text("Password") },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),

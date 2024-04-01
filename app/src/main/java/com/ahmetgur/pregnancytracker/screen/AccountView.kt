@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.ahmetgur.pregnancytracker.R
 
 @Composable
 fun AccountView(){
@@ -47,11 +48,11 @@ fun AccountView(){
 
         Row(modifier = Modifier.padding(top = 16.dp)) {
             Icon(
-                painter = painterResource(id = com.ahmetgur.pregnancytracker.R.drawable.ic_launcher_foreground),
-                contentDescription = "My Music",
+                painter = painterResource(id = R.drawable.baseline_account_circle_24),
+                contentDescription = "My Profile",
                 modifier = Modifier.padding(end = 8.dp)
             )
-            Text(text = "My Music")
+            Text(text = "My List")
         }
         Divider()
 

@@ -20,16 +20,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Subscription(){
+fun Premium(){
     Column(
         modifier = Modifier.height(200.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        Text(text = "Manage Subscription")
+        Text(text = "Manage Premium Features")
         Card(modifier = Modifier.padding(8.dp), elevation = 4.dp){
             Column(modifier = Modifier.padding(8.dp)){
                 Column() {
-                    Text(text = "Musical")
+                    Text(text = "Account")
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                         Text(text = "Free Tier")
                         TextButton(onClick = { /*TODO*/ }) {

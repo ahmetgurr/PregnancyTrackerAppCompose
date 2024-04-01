@@ -20,7 +20,7 @@ import com.ahmetgur.pregnancytracker.ui.theme.PregnancyTrackerTheme
 import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel
 import com.ahmetgur.pregnancytracker.screen.MainScreen
 import com.ahmetgur.pregnancytracker.screen.MainView
-import com.ahmetgur.pregnancytracker.screen.Subscription
+import com.ahmetgur.pregnancytracker.screen.Premium
 import com.ahmetgur.pregnancytracker.screen.login.LoginScreen
 import com.ahmetgur.pregnancytracker.screen.login.RegisterScreen
 import com.ahmetgur.pregnancytracker.screen.login.ResetScreen
@@ -67,10 +67,7 @@ fun Navigation(
 
         // Main Screen
         composable(Screen.BottomScreen.MainScreen.route) {
-            MainScreen(
-                authViewModel = authViewModel,
-                onLogout = { navController.navigate(Screen.LoginProceduresScreen.Login.route) }
-            )
+            MainScreen()
         }
 
         // Browse Screen
@@ -80,7 +77,7 @@ fun Navigation(
 
         // Library Screen
         composable(Screen.BottomScreen.Profile.route) {
-            Profile()
+            Profile(authViewModel = authViewModel, navController = navController)
         }
 
         // Account View Screen
@@ -89,8 +86,8 @@ fun Navigation(
         }
 
         // Subscription Screen
-        composable(Screen.DrawerScreen.Subscription.route) {
-            Subscription()
+        composable(Screen.DrawerScreen.Premium.route) {
+            Premium()
         }
 
         composable(Screen.LoginProceduresScreen.MainView.route){

@@ -26,8 +26,8 @@ sealed class Screen(val title: String, val route: String){
     ): Screen(dTitle, dRoute)
     {
         object Account : DrawerScreen("Account", "account", R.drawable.ic_account)
-        object Subscription : DrawerScreen("Subscription", "subscribe", R.drawable.baseline_apps_24)
-        object AddAccount : DrawerScreen("Add Account", "add_account", R.drawable.baseline_apps_24)
+        object Premium : DrawerScreen("Premium", "premium", R.drawable.baseline_workspace_premium_24)
+        object AddAccount : DrawerScreen("Add Account", "add_account", R.drawable.baseline_person_add_24)
     }
 }
 
@@ -39,7 +39,7 @@ val screensInBottom = listOf(
 
 val screensInDrawer = listOf(
     Screen.DrawerScreen.Account,
-    Screen.DrawerScreen.Subscription,
+    Screen.DrawerScreen.Premium,
     Screen.DrawerScreen.AddAccount
 )
 
