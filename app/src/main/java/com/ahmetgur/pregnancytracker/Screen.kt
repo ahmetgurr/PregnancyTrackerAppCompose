@@ -7,19 +7,19 @@ sealed class Screen(val title: String, val route: String){
     sealed class LoginProceduresScreen(val lTitle: String, val lRoute: String, @DrawableRes val icon: Int
     ): Screen(lTitle,lRoute)
     {
-        object Login : LoginProceduresScreen("Login", "login", R.drawable.baseline_apps_24)
-        object Register : LoginProceduresScreen("Register", "register", R.drawable.baseline_apps_24)
-        object Reset: LoginProceduresScreen("Reset", "reset", R.drawable.baseline_apps_24)
-        object MainView: LoginProceduresScreen("MainView", "mainview", R.drawable.baseline_apps_24)
+        object Login : LoginProceduresScreen("Login", "login", R.drawable.baseline_account_circle_24)
+        object Register : LoginProceduresScreen("Register", "register", R.drawable.baseline_account_circle_24)
+        object Reset: LoginProceduresScreen("Reset", "reset", R.drawable.baseline_account_circle_24)
+        object MainView: LoginProceduresScreen("MainView", "mainview", R.drawable.baseline_account_circle_24)
     }
 
 
     sealed class BottomScreen(val bTitle: String, val bRoute: String, @DrawableRes val icon: Int
     ): Screen(bTitle,bRoute)
     {
-        object MainScreen : BottomScreen("MainScreen", "mainscreen", R.drawable.baseline_apps_24)
-        object Library : BottomScreen("Library", "library", R.drawable.baseline_apps_24)
-        object Browse: BottomScreen("Browse", "browse", R.drawable.baseline_apps_24)
+        object MainScreen : BottomScreen("MainScreen", "mainscreen", R.drawable.baseline_home_filled_24)
+        object Library : BottomScreen("Library", "library", R.drawable.baseline_explore_discover_24)
+        object Browse: BottomScreen("Browse", "browse", R.drawable.baseline_account_circle_24)
     }
 
     sealed class DrawerScreen(val dTitle: String, val dRoute: String,@DrawableRes val icon: Int

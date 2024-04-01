@@ -17,29 +17,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.ahmetgur.pregnancytracker.data.Lib
-import com.ahmetgur.pregnancytracker.data.libraries
+import com.ahmetgur.pregnancytracker.data.Set
+import com.ahmetgur.pregnancytracker.data.settings
 
 @Composable
 fun Library(){
     LazyColumn(){
-        items(libraries){ lib ->
-            LibItem(lib = lib)
+        items(settings){ lib ->
+            SetItem(set = lib)
         }
     }
 }
 
 @Composable
-fun LibItem(lib: Lib){
+fun SetItem(set: Set){
     Column {
         Row(modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween) {
             Row {
-                Icon(painter = painterResource(id = lib.icon), modifier =
-                Modifier.padding(horizontal = 8.dp), contentDescription = lib.name)
-                Text(text = lib.name)
+                Icon(painter = painterResource(id = set.icon), modifier =
+                Modifier.padding(horizontal = 8.dp), contentDescription = set.name)
+                Text(text = set.name)
             }
             Icon(imageVector = Icons.Default.KeyboardArrowRight, contentDescription = "Arrow Right")
 
