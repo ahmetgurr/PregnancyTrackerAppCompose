@@ -13,6 +13,10 @@ import kotlinx.coroutines.launch
 class AuthViewModel : ViewModel() {
     private val userRepository: UserRepository
 
+    private val _isLoggedIn = MutableLiveData<Boolean>()
+    val isLoggedIn: LiveData<Boolean> get() = _isLoggedIn
+
+
     init {
         userRepository = UserRepository(
             FirebaseAuth.getInstance(),
@@ -32,6 +36,9 @@ class AuthViewModel : ViewModel() {
     fun login(email: String, password: String) {
         viewModelScope.launch {
             _authResult.value = userRepository.login(email, password)
+            // Giriş yapıldığında isLoggedIn değerini güncelle
+            _isLoggedIn.value = true
+
         }
     }
 }

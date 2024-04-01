@@ -4,22 +4,13 @@ import androidx.annotation.DrawableRes
 
 sealed class Screen(val title: String, val route: String){
 
-/*
-    object LoginScreen:Screen("loginscreen")
-    object RegisterScreen:Screen("registerscreen")
-    object ResetScreen:Screen("resetscreen")
-    object MainScreen:Screen("mainscreen")
-    object SecondScreen:Screen("secondscreen")
-    object ThirdScreen:Screen("thirdscreen")
-
- */
-
     sealed class LoginProceduresScreen(val lTitle: String, val lRoute: String, @DrawableRes val icon: Int
     ): Screen(lTitle,lRoute)
     {
         object Login : LoginProceduresScreen("Login", "login", R.drawable.baseline_apps_24)
         object Register : LoginProceduresScreen("Register", "register", R.drawable.baseline_apps_24)
         object Reset: LoginProceduresScreen("Reset", "reset", R.drawable.baseline_apps_24)
+        object MainView: LoginProceduresScreen("MainView", "mainview", R.drawable.baseline_apps_24)
     }
 
 
@@ -51,3 +42,23 @@ val screensInDrawer = listOf(
     Screen.DrawerScreen.Subscription,
     Screen.DrawerScreen.AddAccount
 )
+
+val screensInLoginProcedures = listOf(
+    Screen.LoginProceduresScreen.Login,
+    Screen.LoginProceduresScreen.Register,
+    Screen.LoginProceduresScreen.Reset
+)
+
+
+
+
+/*
+    object LoginScreen:Screen("loginscreen")
+    object RegisterScreen:Screen("registerscreen")
+    object ResetScreen:Screen("resetscreen")
+    object MainScreen:Screen("mainscreen")
+    object SecondScreen:Screen("secondscreen")
+    object ThirdScreen:Screen("thirdscreen")
+
+ */
+

@@ -1,7 +1,6 @@
 package com.ahmetgur.pregnancytracker.screen
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -46,13 +45,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.ahmetgur.pregnancytracker.Navigation
 import com.ahmetgur.pregnancytracker.R
-import com.ahmetgur.pregnancytracker.Screen
 import com.ahmetgur.pregnancytracker.Screen.*
 import com.ahmetgur.pregnancytracker.screensInBottom
 import com.ahmetgur.pregnancytracker.screensInDrawer
@@ -76,10 +72,9 @@ fun MainView(){
     val modifier = if(isSheetFullScreen) Modifier.fillMaxSize() else Modifier.fillMaxWidth()
 
     //Allow us to navigate between screens / Hangi ekranda olduğumuzu bilmemize yarar.
-    //val controller: NavController = rememberNavController()
-    val controller = rememberNavController()
+    val navController = rememberNavController()
 
-    val navBackStackEntry by controller.currentBackStackEntryAsState()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
     val authViewModel: AuthViewModel = viewModel()
@@ -114,7 +109,7 @@ fun MainView(){
                     Log.d("Navigation", "Item: ${item.bTitle}, Current Route: $currentRoute, Is Selected: $isSelected")
                     val tint = if(isSelected)Color.White else Color.Black
                     BottomNavigationItem(selected = currentRoute == item.bRoute,
-                        onClick = { controller.navigate(item.bRoute)
+                        onClick = { navController.navigate(item.bRoute)
                             title.value = item.bTitle
                         }, icon = {
 
@@ -176,7 +171,7 @@ fun MainView(){
                             if(item.dRoute == "add_account"){
                                 dialogOpen.value= true
                             }else{
-                                controller.navigate(item.dRoute)
+                                navController.navigate(item.dRoute)
                                 title.value = item.dTitle
                             }
                         }
@@ -186,7 +181,7 @@ fun MainView(){
 
         ) {
 
-            Navigation(navController = controller, authViewModel = authViewModel)
+            Navigation(navController = navController, authViewModel = authViewModel)
 
             AccountDialog(dialogOpen = dialogOpen)
 
