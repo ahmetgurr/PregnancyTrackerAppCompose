@@ -48,17 +48,3 @@ val screensInLoginProcedures = listOf(
     Screen.LoginProceduresScreen.Register,
     Screen.LoginProceduresScreen.Reset
 )
-
-
-
-
-/*
-    object LoginScreen:Screen("loginscreen")
-    object RegisterScreen:Screen("registerscreen")
-    object ResetScreen:Screen("resetscreen")
-    object MainScreen:Screen("mainscreen")
-    object SecondScreen:Screen("secondscreen")
-    object ThirdScreen:Screen("thirdscreen")
-
- */
-

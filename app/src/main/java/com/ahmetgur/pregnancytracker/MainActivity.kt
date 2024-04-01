@@ -99,10 +99,9 @@ fun Navigation(
             LoginScreen(
                 authViewModel = authViewModel,
                 onNavigateToSignUp = { navController.navigate(Screen.LoginProceduresScreen.Register.route) },
-                onNavigateToReset = { navController.navigate(Screen.LoginProceduresScreen.Reset.route) }
-            ) {
-                navController.navigate(Screen.LoginProceduresScreen.MainView.route)
-            }
+                onNavigateToReset = { navController.navigate(Screen.LoginProceduresScreen.Reset.route) },
+                onSignInSuccess = { navController.navigate(Screen.LoginProceduresScreen.MainView.route) }
+            )
         }
 
     }
@@ -124,10 +123,9 @@ fun NavigationLogin(
             LoginScreen(
                 authViewModel = authViewModel,
                 onNavigateToSignUp = { navController.navigate(Screen.LoginProceduresScreen.Register.route) },
-                onNavigateToReset = { navController.navigate(Screen.LoginProceduresScreen.Reset.route) }
-            ) {
-                navController.navigate(Screen.LoginProceduresScreen.MainView.route)
-            }
+                onNavigateToReset = { navController.navigate(Screen.LoginProceduresScreen.Reset.route) },
+                onSignInSuccess = { navController.navigate(Screen.LoginProceduresScreen.MainView.route) }
+            )
         }
 
         // Register Screen
