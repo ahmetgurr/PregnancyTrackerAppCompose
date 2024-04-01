@@ -16,8 +16,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.Text
+import androidx.compose.material.Card
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,10 +38,12 @@ fun MainScreen(
     authViewModel: AuthViewModel,
     onLogout: () -> Unit
 ){
+    val context = LocalContext.current as Activity
+
     val categories = listOf("Hits", "Happy", "Workout", "Running", "TGIF", "Yoga")
     val grouped = listOf<String>("New Release","Favorites","Top  Rated").groupBy { it[0] }
 
-    val context = LocalContext.current as Activity
+
 
     LazyColumn{
         grouped.forEach{

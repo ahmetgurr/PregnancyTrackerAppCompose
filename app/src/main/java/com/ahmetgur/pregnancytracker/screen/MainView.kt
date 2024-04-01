@@ -1,6 +1,8 @@
 package com.ahmetgur.pregnancytracker.screen
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -41,14 +43,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.ahmetgur.pregnancytracker.MainActivity
 import com.ahmetgur.pregnancytracker.Navigation
 import com.ahmetgur.pregnancytracker.R
+import com.ahmetgur.pregnancytracker.Screen
 import com.ahmetgur.pregnancytracker.Screen.*
 import com.ahmetgur.pregnancytracker.screensInBottom
 import com.ahmetgur.pregnancytracker.screensInDrawer
@@ -79,6 +85,7 @@ fun MainView(){
 
     val authViewModel: AuthViewModel = viewModel()
 
+    val context = LocalContext.current as Activity
 
 
     val dialogOpen = remember {
@@ -130,8 +137,18 @@ fun MainView(){
         sheetState = modalSheetState,
         sheetShape = RoundedCornerShape(topStart = roundedCornerRadius, topEnd = roundedCornerRadius),
         sheetContent = {
-            MoreBottomSheet(modifier = modifier)
-        }) {
+            MoreBottomSheet(
+                modifier = modifier,
+                onLogoutClick = {
+                    authViewModel.logout()
+                    navController.navigate(Screen.LoginProceduresScreen.Login.route)
+                    val intent = Intent(context, MainActivity::class.java)
+                    ContextCompat.startActivity(context, intent, null)
+                    context.finish()
+                }
+            )
+        }
+    ) {
         Scaffold(
             bottomBar = bottomBar,
             topBar = {
@@ -159,7 +176,8 @@ fun MainView(){
                         Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "Menu" )
                     }}
                 )
-            },scaffoldState = scaffoldState,
+            },
+            scaffoldState = scaffoldState,
             drawerContent = {
                 LazyColumn(Modifier.padding(16.dp)){
                     items(screensInDrawer){
@@ -220,7 +238,10 @@ fun DrawerItem(
 }
 
 @Composable
-fun MoreBottomSheet(modifier: Modifier){
+fun MoreBottomSheet(
+    modifier: Modifier,
+    onLogoutClick: () -> Unit // onClick lambda
+){
     Box(
         Modifier
             .fillMaxWidth()
@@ -237,26 +258,41 @@ fun MoreBottomSheet(modifier: Modifier){
                 Text(text = "Settings", fontSize = 20.sp, color = Color.White)
             }
             Row(modifier = modifier.padding(16.dp)) {
-                androidx.compose.material.Icon(
+                Icon(
                     modifier = Modifier.padding(end = 8.dp),
                     painter = painterResource(id = R.drawable.ic_baseline_share_24),
                     contentDescription = "Share"
                 )
 
-                androidx.compose.material.Text(
+                Text(
                     text = "Share",
                     fontSize = 20.sp,
                     color = Color.White
                 )
             }
             Row(modifier = modifier.padding(16.dp)) {
-                androidx.compose.material.Icon(
+                Icon(
                     modifier = Modifier.padding(end = 8.dp),
                     painter = painterResource(id = R.drawable.ic_help_green),
                     contentDescription = "Help"
                 )
-                androidx.compose.material.Text(text = "Help", fontSize = 20.sp, color = Color.White)
+                Text(text = "Help", fontSize = 20.sp, color = Color.White)
             }
+
+            // Logout işmeine click eventi ekleyelim
+            Row(modifier = modifier.padding(16.dp).clickable {
+                // onClick lambda ile Logout işlemi gerçekleştirilsin
+                onLogoutClick()
+            }) {
+                Icon(
+                    modifier = Modifier.padding(end = 8.dp),
+                    painter = painterResource(id = R.drawable.baseline_logout_24),
+                    contentDescription = "Logout"
+                )
+                Text(text = "Logout", fontSize = 20.sp, color = Color.White)
+            }
+
         }
     }
 }
+

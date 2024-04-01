@@ -23,8 +23,8 @@ import com.ahmetgur.pregnancytracker.data.profiles
 @Composable
 fun Profile(){
     LazyColumn(){
-        items(profiles){ lib ->
-            ProfileItem(prf = lib)
+        items(profiles){ prf ->
+            ProfileItem(prf = prf)
         }
     }
 }
