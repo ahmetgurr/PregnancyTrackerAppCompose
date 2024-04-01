@@ -18,8 +18,8 @@ sealed class Screen(val title: String, val route: String){
     ): Screen(bTitle,bRoute)
     {
         object MainScreen : BottomScreen("MainScreen", "mainscreen", R.drawable.baseline_home_filled_24)
-        object Library : BottomScreen("Library", "library", R.drawable.baseline_explore_discover_24)
-        object Browse: BottomScreen("Browse", "browse", R.drawable.baseline_account_circle_24)
+        object Discover: BottomScreen("Discover", "discover", R.drawable.baseline_explore_discover_24)
+        object Profile : BottomScreen("Profile", "profile", R.drawable.baseline_account_circle_24)
     }
 
     sealed class DrawerScreen(val dTitle: String, val dRoute: String,@DrawableRes val icon: Int
@@ -33,8 +33,8 @@ sealed class Screen(val title: String, val route: String){
 
 val screensInBottom = listOf(
     Screen.BottomScreen.MainScreen,
-    Screen.BottomScreen.Browse,
-    Screen.BottomScreen.Library
+    Screen.BottomScreen.Discover,
+    Screen.BottomScreen.Profile
 )
 
 val screensInDrawer = listOf(

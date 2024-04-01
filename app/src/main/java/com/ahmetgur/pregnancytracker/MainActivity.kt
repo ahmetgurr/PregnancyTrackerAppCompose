@@ -1,8 +1,5 @@
 package com.ahmetgur.pregnancytracker
 
-import android.app.Application
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,10 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -21,7 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ahmetgur.pregnancytracker.screen.AccountView
 import com.ahmetgur.pregnancytracker.screen.Browse
-import com.ahmetgur.pregnancytracker.screen.Library
+import com.ahmetgur.pregnancytracker.screen.Profile
 import com.ahmetgur.pregnancytracker.ui.theme.PregnancyTrackerTheme
 import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel
 import com.ahmetgur.pregnancytracker.screen.MainScreen
@@ -73,13 +67,13 @@ fun Navigation(
         }
 
         // Browse Screen
-        composable(Screen.BottomScreen.Browse.route) {
+        composable(Screen.BottomScreen.Discover.route) {
             Browse()
         }
 
         // Library Screen
-        composable(Screen.BottomScreen.Library.route) {
-            Library()
+        composable(Screen.BottomScreen.Profile.route) {
+            Profile()
         }
 
         // Account View Screen
