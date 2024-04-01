@@ -41,4 +41,11 @@ class AuthViewModel : ViewModel() {
 
         }
     }
+    fun logout() {
+        viewModelScope.launch {
+            userRepository.logout()
+            _isLoggedIn.value = false
+        }
+    }
+
 }

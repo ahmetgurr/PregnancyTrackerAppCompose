@@ -33,6 +33,12 @@ class UserRepository(
             Result.Error(e)
         }
 
-
+    suspend fun logout() {
+        try {
+            auth.signOut()
+        } catch (e: Exception) {
+            Log.e("UserRepository", "Error logging out: ${e.message}", e)
+        }
+    }
 
 }
