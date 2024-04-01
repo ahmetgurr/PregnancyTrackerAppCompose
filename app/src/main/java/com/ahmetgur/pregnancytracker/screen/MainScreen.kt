@@ -7,6 +7,8 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,23 +22,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
 import com.ahmetgur.pregnancytracker.MainActivity
 import com.ahmetgur.pregnancytracker.R
+import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainScreen(
+    authViewModel: AuthViewModel,
     onLogout: () -> Unit
 ){
     val categories = listOf("Hits", "Happy", "Workout", "Running", "TGIF", "Yoga")
     val grouped = listOf<String>("New Release","Favorites","Top  Rated").groupBy { it[0] }
 
-    val context = androidx.compose.ui.platform.LocalContext.current
-    var x =  context as Activity
+    val context = LocalContext.current as Activity
 
     LazyColumn{
         grouped.forEach{
@@ -52,19 +57,18 @@ fun MainScreen(
     }
     Button(
         onClick = {
+            authViewModel.logout()
             onLogout()
             // Giriş ekranına yönlendirme işlemi
             val intent = Intent(context, MainActivity::class.java)
             startActivity(context, intent, null)
 
             // Mevcut aktiviteyi sonlandırma
-            x.finish()
-
-
+            context.finish()
         },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(100.dp)
     ) {
         Text("Logout")
     }
@@ -85,4 +89,20 @@ fun BrowserItem(cat: String, drawable:Int){
             Image(painter = painterResource(id = drawable), contentDescription = cat)
         }
     }
+}
+
+@Composable
+@Preview
+fun PreviewMainScreen(){
+    Button(
+        onClick = {
+
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(200.dp)
+    ) {
+        Text("Logout")
+    }
+
 }

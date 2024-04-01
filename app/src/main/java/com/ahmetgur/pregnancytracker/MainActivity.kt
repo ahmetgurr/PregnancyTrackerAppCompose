@@ -66,10 +66,10 @@ fun Navigation(
 
         // Main Screen
         composable(Screen.BottomScreen.MainScreen.route) {
-            MainScreen(onLogout = {
-                authViewModel.logout()
-                navController.navigate(Screen.LoginProceduresScreen.Login.route)
-            })
+            MainScreen(
+                authViewModel = authViewModel,
+                onLogout = { navController.navigate(Screen.LoginProceduresScreen.Login.route) }
+            )
         }
 
         // Browse Screen

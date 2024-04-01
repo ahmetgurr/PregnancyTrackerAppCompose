@@ -239,7 +239,7 @@ fun MoreBottomSheet(modifier: Modifier){
             Row(modifier = modifier.padding(16.dp)) {
                 androidx.compose.material.Icon(
                     modifier = Modifier.padding(end = 8.dp),
-                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                    painter = painterResource(id = R.drawable.ic_baseline_share_24),
                     contentDescription = "Share"
                 )
 

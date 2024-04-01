@@ -6,9 +6,9 @@ import com.ahmetgur.pregnancytracker.R
 data class Lib(@DrawableRes val icon: Int, val name:String)
 
 val libraries = listOf<Lib>(
-    Lib(R.drawable.ic_launcher_foreground, "Playlist"),
-    Lib(R.drawable.ic_launcher_foreground,"Artists"),
-    Lib(R.drawable.ic_launcher_foreground,"Album"),
-    Lib(R.drawable.ic_launcher_foreground,"Songs"),
-    Lib(R.drawable.ic_launcher_foreground,"Genre")
+    Lib(R.drawable.baseline_settings_24, "Playlist"),
+    Lib(R.drawable.baseline_settings_24,"Artists"),
+    Lib(R.drawable.baseline_settings_24,"Album"),
+    Lib(R.drawable.baseline_settings_24,"Songs"),
+    Lib(R.drawable.baseline_settings_24,"Genre")
 )
