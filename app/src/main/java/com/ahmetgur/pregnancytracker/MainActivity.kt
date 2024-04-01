@@ -39,7 +39,14 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    NavigationLogin(navController = navController, authViewModel = authViewModel)
+                    //NavigationLogin(navController = navController, authViewModel = authViewModel)
+                    if (authViewModel.isLoggedIn()) {
+                        // Kullanıcı giriş yapmışsa, ana ekrana yönlendir
+                        MainView()
+                    } else {
+                        // Kullanıcı giriş yapmamışsa, giriş ekranına yönlendir
+                        NavigationLogin(navController = navController, authViewModel = authViewModel)
+                    }
 
                 }
             }

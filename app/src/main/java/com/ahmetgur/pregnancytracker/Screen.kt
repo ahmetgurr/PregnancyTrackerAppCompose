@@ -17,7 +17,7 @@ sealed class Screen(val title: String, val route: String){
     sealed class BottomScreen(val bTitle: String, val bRoute: String, @DrawableRes val icon: Int
     ): Screen(bTitle,bRoute)
     {
-        object MainScreen : BottomScreen("MainScreen", "mainscreen", R.drawable.baseline_home_filled_24)
+        object MainScreen : BottomScreen("Home", "mainscreen", R.drawable.baseline_home_filled_24)
         object Discover: BottomScreen("Discover", "discover", R.drawable.baseline_explore_discover_24)
         object Profile : BottomScreen("Profile", "profile", R.drawable.baseline_account_circle_24)
     }

@@ -16,13 +16,25 @@ class AuthViewModel : ViewModel() {
     private val _isLoggedIn = MutableLiveData<Boolean>()
     val isLoggedIn: LiveData<Boolean> get() = _isLoggedIn
 
-
     init {
         userRepository = UserRepository(
             FirebaseAuth.getInstance(),
             Injection.instance()
         )
+        checkLoginStatus()
     }
+
+
+
+    private fun checkLoginStatus() {
+        _isLoggedIn.value = FirebaseAuth.getInstance().currentUser != null
+    }
+    // Kullanıcının giriş yapmış olup olmadığını kontrol et
+    fun isLoggedIn(): Boolean {
+        return _isLoggedIn.value ?: false
+    }
+
+
 
     private val _authResult = MutableLiveData<Result<Boolean>>()
     val authResult: LiveData<Result<Boolean>> get() = _authResult
@@ -30,6 +42,8 @@ class AuthViewModel : ViewModel() {
     fun signUp(email: String, password: String, firstName: String, lastName: String) {
         viewModelScope.launch {
             _authResult.value = userRepository.signUp(email, password, firstName, lastName)
+            // Kayıt olduktan sonra giriş durumunu güncelle
+            checkLoginStatus()
         }
     }
 
@@ -37,14 +51,15 @@ class AuthViewModel : ViewModel() {
         viewModelScope.launch {
             _authResult.value = userRepository.login(email, password)
             // Giriş yapıldığında isLoggedIn değerini güncelle
-            _isLoggedIn.value = true
 
+            checkLoginStatus()
         }
     }
     fun logout() {
         viewModelScope.launch {
             userRepository.logout()
-            _isLoggedIn.value = false
+            // Çıkış yaptıktan sonra giriş durumunu güncelle
+            checkLoginStatus()
         }
     }
 
