@@ -56,6 +56,7 @@ import com.ahmetgur.pregnancytracker.Navigation
 import com.ahmetgur.pregnancytracker.R
 import com.ahmetgur.pregnancytracker.Screen
 import com.ahmetgur.pregnancytracker.Screen.*
+import com.ahmetgur.pregnancytracker.screen.drawerscreen.AccountDialog
 import com.ahmetgur.pregnancytracker.screensInBottom
 import com.ahmetgur.pregnancytracker.screensInDrawer
 import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel

@@ -1,4 +1,4 @@
-package com.ahmetgur.pregnancytracker.screen
+package com.ahmetgur.pregnancytracker.screen.bottomscreen
 
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid

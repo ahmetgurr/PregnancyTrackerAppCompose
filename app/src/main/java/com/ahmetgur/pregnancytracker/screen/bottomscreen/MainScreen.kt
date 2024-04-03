@@ -1,4 +1,4 @@
-package com.ahmetgur.pregnancytracker.screen
+package com.ahmetgur.pregnancytracker.screen.bottomscreen
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi

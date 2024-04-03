@@ -1,4 +1,4 @@
-package com.ahmetgur.pregnancytracker.screen
+package com.ahmetgur.pregnancytracker.screen.drawerscreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

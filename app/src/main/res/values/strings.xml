@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">PregnancyTracker</string>
+    <string name="app_name">Pregnancy Tracker</string>
+    <string name="about_us">We are the Pregnancy Tracker team.</string>
 </resources>
