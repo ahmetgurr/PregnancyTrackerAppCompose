@@ -24,7 +24,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ahmetgur.pregnancytracker.R
 import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel
@@ -127,21 +126,8 @@ fun RegisterScreen(
                 }
         )
 
-
-
-
-
     }
 }
-@Preview
-@Composable
-fun SignUpScreenPreview() {
-    RegisterScreen(
-        authViewModel = AuthViewModel(),
-        onNavigateToLogin = {}
-    )
-}
-
 
 
 

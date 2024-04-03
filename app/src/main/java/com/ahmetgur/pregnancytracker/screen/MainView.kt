@@ -60,7 +60,6 @@ import com.ahmetgur.pregnancytracker.screensInBottom
 import com.ahmetgur.pregnancytracker.screensInDrawer
 import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel
 import com.ahmetgur.pregnancytracker.viewmodel.MainViewModel
-
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -240,7 +239,7 @@ fun DrawerItem(
 @Composable
 fun MoreBottomSheet(
     modifier: Modifier,
-    onLogoutClick: () -> Unit // onClick lambda
+    onLogoutClick: () -> Unit
 ){
     Box(
         Modifier

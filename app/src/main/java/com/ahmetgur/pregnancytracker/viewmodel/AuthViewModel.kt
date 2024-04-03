@@ -24,46 +24,40 @@ class AuthViewModel : ViewModel() {
         checkLoginStatus()
     }
 
-
-
     private fun checkLoginStatus() {
         _isLoggedIn.value = FirebaseAuth.getInstance().currentUser != null
     }
-    // Kullanıcının giriş yapmış olup olmadığını kontrol et
     fun isLoggedIn(): Boolean {
         return _isLoggedIn.value ?: false
     }
 
-
-
     private val _authResult = MutableLiveData<Result<Boolean>>()
     val authResult: LiveData<Result<Boolean>> get() = _authResult
-
-    fun signUp(email: String, password: String, firstName: String, lastName: String) {
-        viewModelScope.launch {
-            _authResult.value = userRepository.signUp(email, password, firstName, lastName)
-            // Kayıt olduktan sonra giriş durumunu güncelle
-            checkLoginStatus()
-        }
-    }
 
     fun login(email: String, password: String) {
         viewModelScope.launch {
             _authResult.value = userRepository.login(email, password)
-            // Giriş yapıldığında isLoggedIn değerini güncelle
             checkLoginStatus()
         }
     }
-    fun logout() {
+
+    fun signUp(email: String, password: String, firstName: String, lastName: String) {
         viewModelScope.launch {
-            userRepository.logout()
-            // Çıkış yaptıktan sonra giriş durumunu güncelle
+            _authResult.value = userRepository.signUp(email, password, firstName, lastName)
             checkLoginStatus()
         }
     }
+
     fun resetPassword(email: String) {
         viewModelScope.launch {
             _authResult.value = userRepository.resetPassword(email)
+        }
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            userRepository.logout()
+            checkLoginStatus()
         }
     }
 
