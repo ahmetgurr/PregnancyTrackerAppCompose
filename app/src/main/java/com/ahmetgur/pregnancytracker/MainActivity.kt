@@ -139,6 +139,7 @@ fun NavigationLogin(
         // Reset Screen
         composable(Screen.LoginProceduresScreen.Reset.route) {
             ResetScreen(
+                authViewModel = authViewModel,
                 onNavigateToLogin = { navController.navigate(Screen.LoginProceduresScreen.Login.route) }
             )
         }

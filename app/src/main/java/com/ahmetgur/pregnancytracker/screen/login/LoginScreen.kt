@@ -101,17 +101,6 @@ fun LoginScreen(
         Button(
             onClick = {
                 authViewModel.login(email, password)
-                when (result) {
-                    is Result.Success->{
-                        onSignInSuccess()
-                    }
-                    is Result.Error ->{
-
-                    }
-
-                    else -> {
-                    }
-                }
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -119,6 +108,7 @@ fun LoginScreen(
         ) {
             Text("Login")
         }
+
         Spacer(modifier = Modifier.height(16.dp))
 
         Text("Don't have an account? Sign up.",
@@ -136,6 +126,19 @@ fun LoginScreen(
                 onNavigateToReset()
             }
         )
+        // Auth işlemi sonucunu dinle
+        when (result) {
+            is Result.Success -> {
+                onSignInSuccess()
+            }
+            is Result.Error -> {
+                // Hata durumunu işle
+            }
+
+            else -> {}
+        }
+
+
     }
 }
 

@@ -41,4 +41,12 @@ class UserRepository(
         }
     }
 
+    suspend fun resetPassword(email: String): Result<Boolean> =
+        try {
+            auth.sendPasswordResetEmail(email).await()
+            Result.Success(true)
+        }catch (e: Exception) {
+            Result.Error(e)
+        }
+
 }

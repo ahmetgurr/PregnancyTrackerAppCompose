@@ -51,7 +51,6 @@ class AuthViewModel : ViewModel() {
         viewModelScope.launch {
             _authResult.value = userRepository.login(email, password)
             // Giriş yapıldığında isLoggedIn değerini güncelle
-
             checkLoginStatus()
         }
     }
@@ -60,6 +59,11 @@ class AuthViewModel : ViewModel() {
             userRepository.logout()
             // Çıkış yaptıktan sonra giriş durumunu güncelle
             checkLoginStatus()
+        }
+    }
+    fun resetPassword(email: String) {
+        viewModelScope.launch {
+            _authResult.value = userRepository.resetPassword(email)
         }
     }
 
