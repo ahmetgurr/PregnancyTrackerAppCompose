@@ -13,5 +13,5 @@
         Prf(R.drawable.baseline_phone_24,"Contact Us"),
         Prf(R.drawable.baseline_recommend_24,"Rate Us"),
         Prf(R.drawable.ic_baseline_share_24,"Share"),
-        Prf(R.drawable.baseline_logout_24,"Logout")
+        Prf(R.drawable.baseline_logout_24,"Logout"),
     )

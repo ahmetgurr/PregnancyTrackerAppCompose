@@ -33,7 +33,10 @@ import com.ahmetgur.pregnancytracker.screen.CustomAlertDialog
 import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel
 
 @Composable
-fun Profile(authViewModel: AuthViewModel, navController: NavController,onLogoutClick: () -> Unit = {}){
+fun Profile(
+    authViewModel: AuthViewModel,
+    navController: NavController
+){
 
     val context = LocalContext.current as Activity
 
@@ -57,7 +60,6 @@ fun Profile(authViewModel: AuthViewModel, navController: NavController,onLogoutC
         }
     }
 
-
 @Composable
 fun ProfileItem(
     prf: Prf,
@@ -80,43 +82,51 @@ fun ProfileItem(
                 .clickable {
                     when (prf.name) {
                         "Settings" -> {
+
                         }
+
                         "About Us" -> {
                             showDialog(
                                 titleValue = "About Us",
                                 messageValue = "This is the About Us message."
                             )
                         }
+
                         "Privacy And Policy" -> {
                             showDialog(
                                 titleValue = "Privacy And Policy",
                                 messageValue = "This is the Privacy And Policy message."
                             )
                         }
+
                         "Terms And Conditions" -> {
                             showDialog(
                                 titleValue = "Terms And Conditions",
                                 messageValue = "This is the Terms And Conditions message."
                             )
                         }
+
                         "Contact Us" -> {
                             showDialog(
                                 titleValue = "Contact Us",
                                 messageValue = "This is the Contact Us message."
                             )
                         }
+
                         "Rate Us" -> {
                             showDialog(
                                 titleValue = "Rate Us",
                                 messageValue = "This is the Rate Us message."
                             )
                         }
+
                         "Share" -> {
                             showDialog(
                                 titleValue = "Share",
                                 messageValue = "This is the Share message."
                             )
                         }
+
                         "Logout" -> {
                             onLogoutClick()
                         }

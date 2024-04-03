@@ -84,7 +84,7 @@ fun Navigation(
 
         // Account View Screen
         composable(Screen.DrawerScreen.Account.route) {
-            AccountView()
+            AccountView(authViewModel = authViewModel, navController = navController)
         }
 
         // Subscription Screen

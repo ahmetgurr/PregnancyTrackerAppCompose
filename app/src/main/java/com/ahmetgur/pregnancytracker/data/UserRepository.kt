@@ -49,4 +49,12 @@ class UserRepository(
             Result.Error(e)
         }
 
+    suspend fun deleteAccount(): Result<Boolean> =
+        try {
+            auth.currentUser?.delete()?.await()
+            Result.Success(true)
+        }catch (e: Exception) {
+            Result.Error(e)
+        }
+
 }

@@ -60,5 +60,11 @@ class AuthViewModel : ViewModel() {
             checkLoginStatus()
         }
     }
+    fun deleteAccount() {
+        viewModelScope.launch {
+            userRepository.deleteAccount()
+            checkLoginStatus()
+        }
+    }
 
 }
