@@ -30,6 +30,8 @@ import com.ahmetgur.pregnancytracker.Screen
 import com.ahmetgur.pregnancytracker.data.Prf
 import com.ahmetgur.pregnancytracker.data.profiles
 import com.ahmetgur.pregnancytracker.screen.CustomAlertDialog
+import com.ahmetgur.pregnancytracker.util.Util
+import com.ahmetgur.pregnancytracker.util.Util.logoutAndNavigateToLogin
 import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel
 
 @Composable
@@ -37,8 +39,6 @@ fun Profile(
     authViewModel: AuthViewModel,
     navController: NavController
 ){
-
-
     LazyColumn(){
         items(profiles){ prf ->
             ProfileItem(
@@ -122,13 +122,8 @@ fun ProfileItem(
                         }
 
                         "Logout" -> {
-                            authViewModel.logout()
-                            // MainActivity'yi başlatma ve mevcut aktiviteyi sonlandırma
-                            val intent = Intent(context, MainActivity::class.java)
-                            ContextCompat.startActivity(context, intent, null)
-                            (context as Activity).finish()
-                            navController.navigate(Screen.LoginProceduresScreen.Login.route)                        }
-
+                            logoutAndNavigateToLogin(authViewModel, context, navController)
+                        }
                     }
                 },
             horizontalArrangement = Arrangement.SpaceBetween

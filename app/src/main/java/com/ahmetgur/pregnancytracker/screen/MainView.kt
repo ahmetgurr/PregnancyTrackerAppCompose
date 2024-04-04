@@ -2,6 +2,7 @@ package com.ahmetgur.pregnancytracker.screen
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.background
@@ -60,6 +61,7 @@ import com.ahmetgur.pregnancytracker.Screen.*
 import com.ahmetgur.pregnancytracker.screen.drawerscreen.AccountDialog
 import com.ahmetgur.pregnancytracker.screensInBottom
 import com.ahmetgur.pregnancytracker.screensInDrawer
+import com.ahmetgur.pregnancytracker.util.Util.logoutAndNavigateToLogin
 import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel
 import com.ahmetgur.pregnancytracker.viewmodel.MainViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -141,7 +143,13 @@ fun MainView(){
             MoreBottomSheet(
                 modifier = modifier,
                 authViewModel = authViewModel,
-                navController = navController
+                navController = navController,
+                onMoreBottomSheetClicked = {
+                    scope.launch {
+                        modalSheetState.hide()
+
+                    }
+                }
             )
         }
     ) {
@@ -164,7 +172,6 @@ fun MainView(){
                         }
                     },
                     navigationIcon = { IconButton(onClick = {
-                        // Open the drawer
                         scope.launch {
                             scaffoldState.drawerState.open()
                         }
@@ -220,9 +227,7 @@ fun DrawerItem(
             .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 16.dp)
             .background(background)
-            .clickable {
-                onDrawerItemClicked()
-            })
+            .clickable { onDrawerItemClicked() })
     {
         Icon(painter = painterResource(id = item.icon),
             contentDescription = item.dRoute,
@@ -237,23 +242,26 @@ fun DrawerItem(
 fun MoreBottomSheet(
     modifier: Modifier,
     authViewModel: AuthViewModel,
-    navController: NavController
+    navController: NavController,
+    onMoreBottomSheetClicked: () -> Unit
+
 ) {
     val context = LocalContext.current as Activity
     Box(
         Modifier
             .fillMaxWidth()
             .height(300.dp)
-            .background(
-                MaterialTheme.colors.primarySurface
-            )
+            .background(MaterialTheme.colors.primarySurface)
+            .clickable{ onMoreBottomSheetClicked() }
     ){
         Column(modifier = modifier.padding(16.dp), verticalArrangement = Arrangement.SpaceBetween){
             Row(
                 modifier = modifier
                 .padding(16.dp).clickable {
                     navController.navigate(Screen.DrawerScreen.Account.route)
-                    }){
+                    onMoreBottomSheetClicked()
+                    }
+            ){
                 Icon(modifier = Modifier.padding(end = 8.dp),
                     painter =  painterResource(id = R.drawable.baseline_settings_24),
                     contentDescription = "Account")
@@ -281,16 +289,10 @@ fun MoreBottomSheet(
                 Text(text = "Help", fontSize = 20.sp, color = Color.White)
             }
 
-            // Logout işmeine click eventi ekleyelim
             Row(
                 modifier = modifier
                     .padding(16.dp).clickable {
-                        authViewModel.logout()
-                        // MainActivity'yi başlatma ve mevcut aktiviteyi sonlandırma
-                        val intent = Intent(context, MainActivity::class.java)
-                        ContextCompat.startActivity(context, intent, null)
-                        (context as Activity).finish()
-                        navController.navigate(Screen.LoginProceduresScreen.Login.route)
+                        logoutAndNavigateToLogin(authViewModel, context, navController)
                     }) {
                 Icon(
                     modifier = Modifier.padding(end = 8.dp),

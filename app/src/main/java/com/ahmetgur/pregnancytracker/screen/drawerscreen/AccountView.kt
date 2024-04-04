@@ -30,6 +30,7 @@ import androidx.navigation.NavController
 import com.ahmetgur.pregnancytracker.MainActivity
 import com.ahmetgur.pregnancytracker.R
 import com.ahmetgur.pregnancytracker.Screen
+import com.ahmetgur.pregnancytracker.util.Util.logoutAndNavigateToLogin
 import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel
 
 @Composable
@@ -85,12 +86,7 @@ fun AccountView(authViewModel: AuthViewModel, navController: NavController){
                     IconButton(onClick = {
                         authViewModel.deleteAccount()
                         showDialog.value = false
-                        authViewModel.logout()
-                        val intent = Intent(context, MainActivity::class.java)
-                        ContextCompat.startActivity(context, intent, null)
-                        (context as Activity).finish()
-                        navController.navigate(Screen.LoginProceduresScreen.Login.route)
-
+                        logoutAndNavigateToLogin(authViewModel, context, navController)
                     }) {
                         Text("Yes")
                     }
