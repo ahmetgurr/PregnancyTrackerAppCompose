@@ -6,7 +6,7 @@
     data class Prf(@DrawableRes val icon: Int, val name:String)
 
     val profiles = listOf<Prf>(
-        Prf(R.drawable.baseline_settings_24, "Settings"),
+        Prf(R.drawable.baseline_settings_24, "Account"),
         Prf(R.drawable.baseline_contact_support_24,"About Us"),
         Prf(R.drawable.baseline_security_24,"Privacy And Policy"),
         Prf(R.drawable.baseline_warning_24,"Terms And Conditions"),

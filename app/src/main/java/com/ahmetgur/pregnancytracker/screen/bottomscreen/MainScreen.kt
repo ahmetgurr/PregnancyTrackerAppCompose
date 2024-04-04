@@ -3,6 +3,7 @@ package com.ahmetgur.pregnancytracker.screen.bottomscreen
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -45,7 +46,8 @@ fun MainScreen(){
 fun BrowserItem(cat: String, drawable:Int){
     Card(modifier = Modifier
         .padding(16.dp)
-        .size(200.dp),
+        .size(200.dp)
+        .clickable {},
         border = BorderStroke(3.dp, color = Color.DarkGray)
     ){
         Column(verticalArrangement = Arrangement.Center,

@@ -38,22 +38,13 @@ fun Profile(
     navController: NavController
 ){
 
-    val context = LocalContext.current as Activity
 
     LazyColumn(){
         items(profiles){ prf ->
             ProfileItem(
                 prf = prf,
-                onLogoutClick = {
-                    if (prf.name == "Logout") {
-                        authViewModel.logout()
-                        // MainActivity'yi başlatma ve mevcut aktiviteyi sonlandırma
-                        val intent = Intent(context, MainActivity::class.java)
-                        ContextCompat.startActivity(context, intent, null)
-                        (context as Activity).finish()
-                        navController.navigate(Screen.LoginProceduresScreen.Login.route)
-                    }
-                },
+                authViewModel = authViewModel,
+                navController = navController,
                 )
 
             }
@@ -63,8 +54,11 @@ fun Profile(
 @Composable
 fun ProfileItem(
     prf: Prf,
-    onLogoutClick: () -> Unit = {}
+    authViewModel: AuthViewModel,
+    navController: NavController
 ) {
+    val context = LocalContext.current as Activity
+
     val showDialog = remember { mutableStateOf(false) }
     val title = remember { mutableStateOf("") }
     val message = remember { mutableStateOf("") }
@@ -81,8 +75,8 @@ fun ProfileItem(
                 .padding(vertical = 16.dp)
                 .clickable {
                     when (prf.name) {
-                        "Settings" -> {
-
+                        "Account" -> {
+                            navController.navigate(Screen.DrawerScreen.Account.route)
                         }
 
                         "About Us" -> {
@@ -128,8 +122,12 @@ fun ProfileItem(
                         }
 
                         "Logout" -> {
-                            onLogoutClick()
-                        }
+                            authViewModel.logout()
+                            // MainActivity'yi başlatma ve mevcut aktiviteyi sonlandırma
+                            val intent = Intent(context, MainActivity::class.java)
+                            ContextCompat.startActivity(context, intent, null)
+                            (context as Activity).finish()
+                            navController.navigate(Screen.LoginProceduresScreen.Login.route)                        }
 
                     }
                 },

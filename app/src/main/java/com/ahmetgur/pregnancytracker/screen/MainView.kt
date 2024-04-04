@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.ahmetgur.pregnancytracker.MainActivity
@@ -139,13 +140,8 @@ fun MainView(){
         sheetContent = {
             MoreBottomSheet(
                 modifier = modifier,
-                onLogoutClick = {
-                    authViewModel.logout()
-                    navController.navigate(Screen.LoginProceduresScreen.Login.route)
-                    val intent = Intent(context, MainActivity::class.java)
-                    ContextCompat.startActivity(context, intent, null)
-                    context.finish()
-                }
+                authViewModel = authViewModel,
+                navController = navController
             )
         }
     ) {
@@ -240,8 +236,10 @@ fun DrawerItem(
 @Composable
 fun MoreBottomSheet(
     modifier: Modifier,
-    onLogoutClick: () -> Unit
-){
+    authViewModel: AuthViewModel,
+    navController: NavController
+) {
+    val context = LocalContext.current as Activity
     Box(
         Modifier
             .fillMaxWidth()
@@ -251,13 +249,17 @@ fun MoreBottomSheet(
             )
     ){
         Column(modifier = modifier.padding(16.dp), verticalArrangement = Arrangement.SpaceBetween){
-            Row(modifier = modifier.padding(16.dp)){
+            Row(
+                modifier = modifier
+                .padding(16.dp).clickable {
+                    navController.navigate(Screen.DrawerScreen.Account.route)
+                    }){
                 Icon(modifier = Modifier.padding(end = 8.dp),
                     painter =  painterResource(id = R.drawable.baseline_settings_24),
-                    contentDescription = "Settings")
-                Text(text = "Settings", fontSize = 20.sp, color = Color.White)
+                    contentDescription = "Account")
+                Text(text = "Account", fontSize = 20.sp, color = Color.White)
             }
-            Row(modifier = modifier.padding(16.dp)) {
+            Row(modifier = modifier.padding(16.dp).clickable {  }) {
                 Icon(
                     modifier = Modifier.padding(end = 8.dp),
                     painter = painterResource(id = R.drawable.ic_baseline_share_24),
@@ -280,10 +282,16 @@ fun MoreBottomSheet(
             }
 
             // Logout işmeine click eventi ekleyelim
-            Row(modifier = modifier.padding(16.dp).clickable {
-                // onClick lambda ile Logout işlemi gerçekleştirilsin
-                onLogoutClick()
-            }) {
+            Row(
+                modifier = modifier
+                    .padding(16.dp).clickable {
+                        authViewModel.logout()
+                        // MainActivity'yi başlatma ve mevcut aktiviteyi sonlandırma
+                        val intent = Intent(context, MainActivity::class.java)
+                        ContextCompat.startActivity(context, intent, null)
+                        (context as Activity).finish()
+                        navController.navigate(Screen.LoginProceduresScreen.Login.route)
+                    }) {
                 Icon(
                     modifier = Modifier.padding(end = 8.dp),
                     painter = painterResource(id = R.drawable.baseline_logout_24),
