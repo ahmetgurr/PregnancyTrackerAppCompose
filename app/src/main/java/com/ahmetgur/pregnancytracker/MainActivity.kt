@@ -132,7 +132,8 @@ fun NavigationLogin(
         composable(Screen.LoginProceduresScreen.Register.route) {
             RegisterScreen(
                 authViewModel = authViewModel,
-                onNavigateToLogin = { navController.navigate(Screen.LoginProceduresScreen.Login.route) }
+                onNavigateToLogin = { navController.navigate(Screen.LoginProceduresScreen.Login.route) },
+                onRegisterInSuccess = { navController.navigate(Screen.LoginProceduresScreen.MainView.route) }
             )
         }
 

@@ -42,7 +42,6 @@ fun LoginScreen(
     onSignInSuccess:()->Unit
 
 ) {
-
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val result by authViewModel.authResult.observeAsState()
@@ -103,7 +102,9 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text("Don't have an account? Sign up.",
+        Text(
+            text = "Don't have an account? Sign up.",
+            color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.clickable {
                 onNavigateToSignUp()
             }
