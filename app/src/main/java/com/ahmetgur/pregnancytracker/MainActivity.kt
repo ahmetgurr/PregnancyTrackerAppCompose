@@ -15,19 +15,20 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.ahmetgur.pregnancytracker.screen.drawerscreen.AccountView
-import com.ahmetgur.pregnancytracker.screen.bottomscreen.Profile
-import com.ahmetgur.pregnancytracker.ui.theme.PregnancyTrackerTheme
-import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel
-import com.ahmetgur.pregnancytracker.screen.bottomscreen.MainScreen
+import com.ahmetgur.pregnancytracker.data.Category
+import com.ahmetgur.pregnancytracker.screen.CategoryDetailScreen
 import com.ahmetgur.pregnancytracker.screen.MainView
+import com.ahmetgur.pregnancytracker.screen.NoteScreen
 import com.ahmetgur.pregnancytracker.screen.bottomscreen.DiscoverScreen
+import com.ahmetgur.pregnancytracker.screen.bottomscreen.MainScreen
+import com.ahmetgur.pregnancytracker.screen.bottomscreen.Profile
+import com.ahmetgur.pregnancytracker.screen.drawerscreen.AccountView
 import com.ahmetgur.pregnancytracker.screen.drawerscreen.Premium
 import com.ahmetgur.pregnancytracker.screen.login.LoginScreen
 import com.ahmetgur.pregnancytracker.screen.login.RegisterScreen
 import com.ahmetgur.pregnancytracker.screen.login.ResetScreen
-import com.ahmetgur.pregnancytracker.data.Category
-import com.ahmetgur.pregnancytracker.screen.CategoryDetailScreen
+import com.ahmetgur.pregnancytracker.ui.theme.PregnancyTrackerTheme
+import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel
 import com.ahmetgur.pregnancytracker.viewmodel.CategoryViewModel
 
 
@@ -51,7 +52,10 @@ class MainActivity : ComponentActivity() {
                         MainView()
                     } else {
                         // Kullanıcı giriş yapmamışsa, giriş ekranına yönlendir
-                        NavigationLogin(navController = navController, authViewModel = authViewModel)
+                        NavigationLogin(
+                            navController = navController,
+                            authViewModel = authViewModel
+                        )
                     }
 
                 }
@@ -65,17 +69,26 @@ fun Navigation(
     navController: NavHostController,
     authViewModel: AuthViewModel
 ) {
-    val categoryViewModel : CategoryViewModel = viewModel()
+    val categoryViewModel: CategoryViewModel = viewModel()
     val viewstate by categoryViewModel.categoriesState
 
     NavHost(
         navController = navController,
         startDestination = Screen.BottomScreen.MainScreen.route,
-        modifier = Modifier.fillMaxSize()) {
+        modifier = Modifier.fillMaxSize()
+    ) {
 
         // Main Screen
         composable(Screen.BottomScreen.MainScreen.route) {
-            MainScreen()
+            MainScreen(navController = navController) {
+                navController.navigate(Screen.NoteScreen.route)
+            }
+        }
+        //Note Screen From Main Screen
+        composable(Screen.NoteScreen.route) {
+            NoteScreen(
+                onNoteSaved = { navController.navigateUp() },
+                onCancel = { navController.navigateUp() })
         }
 
         // Discover Screen
@@ -87,9 +100,10 @@ fun Navigation(
         }
 
         // Discover Detail Screen
-        composable(route = Screen.DetailScreen.route){
-            val category = navController.previousBackStackEntry?.savedStateHandle?.
-            get<Category>("cat") ?: Category("","","","")
+        composable(route = Screen.DetailScreen.route) {
+            val category =
+                navController.previousBackStackEntry?.savedStateHandle?.get<Category>("cat")
+                    ?: Category("", "", "", "")
             CategoryDetailScreen(category = category)
         }
 
@@ -108,10 +122,10 @@ fun Navigation(
             Premium()
         }
 
-        composable(Screen.LoginProceduresScreen.MainView.route){
+        composable(Screen.LoginProceduresScreen.MainView.route) {
             MainView()
         }
-        composable(Screen.LoginProceduresScreen.Login.route){
+        composable(Screen.LoginProceduresScreen.Login.route) {
             LoginScreen(
                 authViewModel = authViewModel,
                 onNavigateToSignUp = { navController.navigate(Screen.LoginProceduresScreen.Register.route) },
@@ -130,9 +144,11 @@ fun NavigationLogin(
     authViewModel: AuthViewModel
 ) {
 
-    NavHost(navController = navController,
+    NavHost(
+        navController = navController,
         startDestination = Screen.LoginProceduresScreen.Login.route,
-        modifier = Modifier.fillMaxSize()) {
+        modifier = Modifier.fillMaxSize()
+    ) {
         // Login Screen
         composable(Screen.LoginProceduresScreen.Login.route) {
             LoginScreen(
@@ -159,7 +175,7 @@ fun NavigationLogin(
                 onNavigateToLogin = { navController.navigate(Screen.LoginProceduresScreen.Login.route) }
             )
         }
-        composable(Screen.LoginProceduresScreen.MainView.route){
+        composable(Screen.LoginProceduresScreen.MainView.route) {
             MainView()
         }
 

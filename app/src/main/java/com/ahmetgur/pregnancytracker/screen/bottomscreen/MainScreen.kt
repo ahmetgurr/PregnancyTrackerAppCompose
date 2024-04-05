@@ -13,14 +13,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.navigation.NavController
 
 import java.util.Calendar
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    navController: NavController,
+    onNavigateToNoteScreen: () -> Unit,
+
+    ) {
 
     var selectedDate by remember { mutableStateOf(Calendar.getInstance()) }
 
@@ -40,12 +46,16 @@ fun MainScreen() {
                 }
             })
 
-        Card(modifier = Modifier.fillMaxWidth()
-                .clickable {
-
+        Card(modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                onNavigateToNoteScreen()
             }
         ) {
-            Text(text = "Selected Date: ${selectedDate.time.toString()}")
+            Column(modifier = Modifier.padding(16.dp)){
+                Text(text = "Selected Date: ${selectedDate.time}")
+                Text(text = "Click to see the details", color = Color.Gray)
+            }
         }
 
     }

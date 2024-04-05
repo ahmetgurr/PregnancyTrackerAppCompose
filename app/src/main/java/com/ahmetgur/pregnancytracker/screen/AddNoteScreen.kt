@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun NoteTakingScreen(
+fun NoteScreen(
     onNoteSaved: (String) -> Unit,
     onCancel: () -> Unit
 ) {
@@ -74,7 +74,7 @@ fun NoteTakingScreen(
 @Composable
 @Preview
 fun NoteTakingScreenPreview() {
-    NoteTakingScreen(
+    NoteScreen(
         onNoteSaved = {},
         onCancel = {}
     )

@@ -32,7 +32,7 @@ sealed class Screen(val title: String, val route: String){
 
     object DetailScreen: Screen("Detail Screen","detailscreen")
 
-    object CalendarScreen: Screen("Calendar Screen","calendarscreen")
+    object NoteScreen: Screen("Note Screen","notescreen")
 }
 
 val screensInBottom = listOf(
