@@ -1,4 +1,4 @@
-package com.ahmetgur.pregnancytracker.service
+package com.ahmetgur.pregnancytracker.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.ahmetgur.pregnancytracker.data.Category
 
 @Composable
 fun CategoryDetailScreen(category: Category) {

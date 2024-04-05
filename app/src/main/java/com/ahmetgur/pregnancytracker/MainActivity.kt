@@ -26,9 +26,9 @@ import com.ahmetgur.pregnancytracker.screen.drawerscreen.Premium
 import com.ahmetgur.pregnancytracker.screen.login.LoginScreen
 import com.ahmetgur.pregnancytracker.screen.login.RegisterScreen
 import com.ahmetgur.pregnancytracker.screen.login.ResetScreen
-import com.ahmetgur.pregnancytracker.service.Category
-import com.ahmetgur.pregnancytracker.service.CategoryDetailScreen
-import com.ahmetgur.pregnancytracker.service.CategoryViewModel
+import com.ahmetgur.pregnancytracker.data.Category
+import com.ahmetgur.pregnancytracker.screen.CategoryDetailScreen
+import com.ahmetgur.pregnancytracker.viewmodel.CategoryViewModel
 
 
 class MainActivity : ComponentActivity() {

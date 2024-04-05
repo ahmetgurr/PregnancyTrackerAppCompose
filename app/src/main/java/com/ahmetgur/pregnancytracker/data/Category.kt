@@ -1,4 +1,4 @@
-package com.ahmetgur.pregnancytracker.service
+package com.ahmetgur.pregnancytracker.data
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

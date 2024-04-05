@@ -1,9 +1,11 @@
-package com.ahmetgur.pregnancytracker.service
+package com.ahmetgur.pregnancytracker.viewmodel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ahmetgur.pregnancytracker.data.Category
+import com.ahmetgur.pregnancytracker.service.discoverService
 import kotlinx.coroutines.launch
 
 class CategoryViewModel : ViewModel() {

@@ -20,8 +20,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.ahmetgur.pregnancytracker.service.Category
-import com.ahmetgur.pregnancytracker.service.CategoryViewModel
+import com.ahmetgur.pregnancytracker.data.Category
+import com.ahmetgur.pregnancytracker.viewmodel.CategoryViewModel
 
 @Composable
 fun DiscoverScreen(

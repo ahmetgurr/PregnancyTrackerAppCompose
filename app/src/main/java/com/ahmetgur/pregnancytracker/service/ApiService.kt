@@ -1,5 +1,6 @@
 package com.ahmetgur.pregnancytracker.service
 
+import com.ahmetgur.pregnancytracker.data.CategoriesResponse
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
