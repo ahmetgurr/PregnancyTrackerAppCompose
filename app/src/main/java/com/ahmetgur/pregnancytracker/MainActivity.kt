@@ -16,12 +16,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ahmetgur.pregnancytracker.screen.drawerscreen.AccountView
-import com.ahmetgur.pregnancytracker.screen.bottomscreen.Browse
 import com.ahmetgur.pregnancytracker.screen.bottomscreen.Profile
 import com.ahmetgur.pregnancytracker.ui.theme.PregnancyTrackerTheme
 import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel
 import com.ahmetgur.pregnancytracker.screen.bottomscreen.MainScreen
 import com.ahmetgur.pregnancytracker.screen.MainView
+import com.ahmetgur.pregnancytracker.screen.bottomscreen.DiscoverScreen
 import com.ahmetgur.pregnancytracker.screen.drawerscreen.Premium
 import com.ahmetgur.pregnancytracker.screen.login.LoginScreen
 import com.ahmetgur.pregnancytracker.screen.login.RegisterScreen
@@ -29,7 +29,6 @@ import com.ahmetgur.pregnancytracker.screen.login.ResetScreen
 import com.ahmetgur.pregnancytracker.service.Category
 import com.ahmetgur.pregnancytracker.service.CategoryDetailScreen
 import com.ahmetgur.pregnancytracker.service.CategoryViewModel
-import com.ahmetgur.pregnancytracker.service.DiscoverScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -79,9 +78,20 @@ fun Navigation(
             MainScreen()
         }
 
-        // Browse Screen
+        // Discover Screen
         composable(Screen.BottomScreen.Discover.route) {
-            Browse()
+            DiscoverScreen(viewstate = viewstate, navigateToDetail = {
+                //this code is for passing the category to the detail screen
+                navController.currentBackStackEntry?.savedStateHandle?.set("cat", it)
+                navController.navigate(Screen.DetailScreen.route)
+            })
+        }
+
+        // Discover Detail Screen
+        composable(route = Screen.DetailScreen.route){
+            val category = navController.previousBackStackEntry?.savedStateHandle?.
+            get<Category>("cat") ?: Category("","","","")
+            CategoryDetailScreen(category = category)
         }
 
         // Library Screen
@@ -111,18 +121,6 @@ fun Navigation(
             )
         }
 
-        composable(route = Screen.RecipeScreen.route){
-            DiscoverScreen(viewstate = viewstate, navigateToDetail = {
-                //this code is for passing the category to the detail screen
-                navController.currentBackStackEntry?.savedStateHandle?.set("cat", it)
-                navController.navigate(Screen.DetailScreen.route)
-            })
-        }
-        composable(route = Screen.DetailScreen.route){
-            val category = navController.previousBackStackEntry?.savedStateHandle?.
-            get<Category>("cat") ?: Category("","","","")
-            CategoryDetailScreen(category = category)
-        }
 
 
 
