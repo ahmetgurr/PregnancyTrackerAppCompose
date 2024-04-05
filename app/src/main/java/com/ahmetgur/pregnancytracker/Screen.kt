@@ -30,7 +30,6 @@ sealed class Screen(val title: String, val route: String){
         object AddAccount : DrawerScreen("Add Account", "add_account", R.drawable.baseline_person_add_24)
     }
 
-    object RecipeScreen: Screen("Recipe Screen","recipescreen")
     object DetailScreen: Screen("Detail Screen","detailscreen")
 
 }

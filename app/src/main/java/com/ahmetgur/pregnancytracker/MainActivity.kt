@@ -65,9 +65,9 @@ fun Navigation(
     navController: NavHostController,
     authViewModel: AuthViewModel
 ) {
+    val categoryViewModel : CategoryViewModel = viewModel()
+    val viewstate by categoryViewModel.categoriesState
 
-    val recipeViewModel : CategoryViewModel = viewModel()
-    val viewstate by recipeViewModel.categoriesState
     NavHost(
         navController = navController,
         startDestination = Screen.BottomScreen.MainScreen.route,
@@ -81,7 +81,6 @@ fun Navigation(
         // Discover Screen
         composable(Screen.BottomScreen.Discover.route) {
             DiscoverScreen(viewstate = viewstate, navigateToDetail = {
-                //this code is for passing the category to the detail screen
                 navController.currentBackStackEntry?.savedStateHandle?.set("cat", it)
                 navController.navigate(Screen.DetailScreen.route)
             })
@@ -121,9 +120,6 @@ fun Navigation(
             )
         }
 
-
-
-
     }
 }
 
@@ -133,7 +129,6 @@ fun NavigationLogin(
     navController: NavHostController,
     authViewModel: AuthViewModel
 ) {
-    //val isLoggedIn by authViewModel.isLoggedIn.observeAsState(false)
 
     NavHost(navController = navController,
         startDestination = Screen.LoginProceduresScreen.Login.route,

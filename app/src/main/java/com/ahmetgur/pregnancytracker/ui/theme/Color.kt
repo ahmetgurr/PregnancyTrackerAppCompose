@@ -28,3 +28,8 @@ val Blue700 = Color(0xFF1976D2)
 val Pink200 = Color(0xFFF48FB1)
 val Pink500 = Color(0xFFE91E63)
 val Pink700 = Color(0xFFC2185B)
+val RichBlack = Color(0xFF050505)
+val BlueMunsell = Color(0xFF0B7B8A)
+val Bone = Color(0xFFDDDBCB)
+val Alabaster = Color(0xFFE9F5F2)
+
