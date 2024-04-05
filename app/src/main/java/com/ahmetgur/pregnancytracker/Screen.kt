@@ -29,6 +29,10 @@ sealed class Screen(val title: String, val route: String){
         object Premium : DrawerScreen("Premium", "premium", R.drawable.baseline_workspace_premium_24)
         object AddAccount : DrawerScreen("Add Account", "add_account", R.drawable.baseline_person_add_24)
     }
+
+    object RecipeScreen: Screen("Recipe Screen","recipescreen")
+    object DetailScreen: Screen("Detail Screen","detailscreen")
+
 }
 
 val screensInBottom = listOf(

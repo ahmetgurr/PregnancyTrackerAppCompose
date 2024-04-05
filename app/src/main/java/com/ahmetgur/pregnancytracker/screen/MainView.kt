@@ -280,7 +280,10 @@ fun MoreBottomSheet(
                     color = Color.White
                 )
             }
-            Row(modifier = modifier.padding(16.dp)) {
+            Row(modifier = modifier.padding(16.dp).clickable {
+                navController.navigate(Screen.RecipeScreen.route)
+                onMoreBottomSheetClicked()
+            }) {
                 Icon(
                     modifier = Modifier.padding(end = 8.dp),
                     painter = painterResource(id = R.drawable.ic_help_green),

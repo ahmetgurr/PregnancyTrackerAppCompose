@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -25,6 +26,10 @@ import com.ahmetgur.pregnancytracker.screen.drawerscreen.Premium
 import com.ahmetgur.pregnancytracker.screen.login.LoginScreen
 import com.ahmetgur.pregnancytracker.screen.login.RegisterScreen
 import com.ahmetgur.pregnancytracker.screen.login.ResetScreen
+import com.ahmetgur.pregnancytracker.service.Category
+import com.ahmetgur.pregnancytracker.service.CategoryDetailScreen
+import com.ahmetgur.pregnancytracker.service.CategoryViewModel
+import com.ahmetgur.pregnancytracker.service.DiscoverScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -62,6 +67,8 @@ fun Navigation(
     authViewModel: AuthViewModel
 ) {
 
+    val recipeViewModel : CategoryViewModel = viewModel()
+    val viewstate by recipeViewModel.categoriesState
     NavHost(
         navController = navController,
         startDestination = Screen.BottomScreen.MainScreen.route,
@@ -103,6 +110,21 @@ fun Navigation(
                 onSignInSuccess = { navController.navigate(Screen.LoginProceduresScreen.MainView.route) }
             )
         }
+
+        composable(route = Screen.RecipeScreen.route){
+            DiscoverScreen(viewstate = viewstate, navigateToDetail = {
+                //this code is for passing the category to the detail screen
+                navController.currentBackStackEntry?.savedStateHandle?.set("cat", it)
+                navController.navigate(Screen.DetailScreen.route)
+            })
+        }
+        composable(route = Screen.DetailScreen.route){
+            val category = navController.previousBackStackEntry?.savedStateHandle?.
+            get<Category>("cat") ?: Category("","","","")
+            CategoryDetailScreen(category = category)
+        }
+
+
 
     }
 }
