@@ -8,6 +8,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -30,6 +32,7 @@ import com.ahmetgur.pregnancytracker.screen.login.ResetScreen
 import com.ahmetgur.pregnancytracker.ui.theme.PregnancyTrackerTheme
 import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel
 import com.ahmetgur.pregnancytracker.viewmodel.CategoryViewModel
+import java.util.Calendar
 
 
 class MainActivity : ComponentActivity() {
@@ -71,6 +74,7 @@ fun Navigation(
 ) {
     val categoryViewModel: CategoryViewModel = viewModel()
     val viewstate by categoryViewModel.categoriesState
+    val selectedDate = remember { mutableStateOf(Calendar.getInstance()) } // selectedDate tanımlandı
 
     NavHost(
         navController = navController,
@@ -87,9 +91,13 @@ fun Navigation(
         //Note Screen From Main Screen
         composable(Screen.NoteScreen.route) {
             NoteScreen(
-                onNoteSaved = { navController.navigateUp() },
-                onCancel = { navController.navigateUp() })
+                viewModel = viewModel(), // NoteViewModel'i almak için viewModel() çağrısı yapıldı.
+                selectedDate = selectedDate.value, // selectedDate parametresi geçirildi.
+                onNoteSaved = { /* Kayıt işlemi başarıyla tamamlandığında yapılacak işlemler */ },
+                onCancel = { /* İptal işlemi yapıldığında yapılacak işlemler */ }
+            )
         }
+
 
         // Discover Screen
         composable(Screen.BottomScreen.Discover.route) {

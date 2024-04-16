@@ -53,8 +53,9 @@ fun MainScreen(
             }
         ) {
             Column(modifier = Modifier.padding(16.dp)){
-                Text(text = "Selected Date: ${selectedDate.time}")
+                Text(text = "Selected Date: ${selectedDate.weekYear}-${selectedDate.get(Calendar.MONTH)+1}-${selectedDate.get(Calendar.DAY_OF_MONTH)}")
                 Text(text = "Click to see the details", color = Color.Gray)
+                // Firestore'dan notları al ve burada da göster.
             }
         }
 

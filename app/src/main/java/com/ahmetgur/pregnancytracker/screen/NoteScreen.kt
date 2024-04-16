@@ -1,14 +1,8 @@
 package com.ahmetgur.pregnancytracker.screen
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import java.util.Calendar
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
-import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -18,13 +12,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.ahmetgur.pregnancytracker.viewmodel.NoteViewModel
 
 @Composable
 fun NoteScreen(
-    onNoteSaved: (String) -> Unit,
+    viewModel: NoteViewModel,
+    selectedDate: Calendar,
+    onNoteSaved: () -> Unit,
     onCancel: () -> Unit
 ) {
     var noteText by remember { mutableStateOf("") }
@@ -44,8 +39,6 @@ fun NoteScreen(
                 .fillMaxWidth()
                 .height(200.dp)
                 .padding(8.dp),
-            textStyle = LocalTextStyle.current.copy(fontSize = 16.sp),
-            maxLines = 10,
             label = { Text("Enter your note") }
         )
 
@@ -61,21 +54,17 @@ fun NoteScreen(
                 Text("Cancel")
             }
             Button(
-                onClick = { onNoteSaved(noteText) },
+                onClick = {
+                    viewModel.saveNote(
+                        date = selectedDate.weekYear.toString() + "-" + (selectedDate.get(Calendar.MONTH) + 1) + "-" + selectedDate.get(Calendar.DAY_OF_MONTH),
+                        content = noteText
+                    )
+                    onNoteSaved()
+                },
                 modifier = Modifier.padding(8.dp)
             ) {
                 Text("Save")
             }
         }
     }
-}
-
-
-@Composable
-@Preview
-fun NoteTakingScreenPreview() {
-    NoteScreen(
-        onNoteSaved = {},
-        onCancel = {}
-    )
 }
