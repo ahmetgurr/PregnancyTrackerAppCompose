@@ -32,6 +32,7 @@ import com.ahmetgur.pregnancytracker.screen.login.ResetScreen
 import com.ahmetgur.pregnancytracker.ui.theme.PregnancyTrackerTheme
 import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel
 import com.ahmetgur.pregnancytracker.viewmodel.CategoryViewModel
+import com.ahmetgur.pregnancytracker.viewmodel.NoteViewModel
 import java.util.Calendar
 
 
@@ -84,17 +85,22 @@ fun Navigation(
 
         // Main Screen
         composable(Screen.BottomScreen.MainScreen.route) {
-            MainScreen(navController = navController) {
+            val noteViewModel: NoteViewModel = viewModel()
+            MainScreen(
+                navController = navController,
+                noteViewModel = noteViewModel
+            ) {
+                selectedDate.value = it
                 navController.navigate(Screen.NoteScreen.route)
             }
         }
+
         //Note Screen From Main Screen
         composable(Screen.NoteScreen.route) {
             NoteScreen(
-                viewModel = viewModel(), // NoteViewModel'i almak için viewModel() çağrısı yapıldı.
-                selectedDate = selectedDate.value, // selectedDate parametresi geçirildi.
-                onNoteSaved = { /* Kayıt işlemi başarıyla tamamlandığında yapılacak işlemler */ },
-                onCancel = { /* İptal işlemi yapıldığında yapılacak işlemler */ }
+                navController = navController,
+                noteViewModel = viewModel(),
+                selectedDate = selectedDate.value
             )
         }
 

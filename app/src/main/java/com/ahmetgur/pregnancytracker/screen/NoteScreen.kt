@@ -13,14 +13,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.ahmetgur.pregnancytracker.viewmodel.NoteViewModel
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @Composable
 fun NoteScreen(
-    viewModel: NoteViewModel,
-    selectedDate: Calendar,
-    onNoteSaved: () -> Unit,
-    onCancel: () -> Unit
+    navController: NavController,
+    noteViewModel: NoteViewModel,
+    selectedDate: Calendar
 ) {
     var noteText by remember { mutableStateOf("") }
 
@@ -48,18 +50,10 @@ fun NoteScreen(
             horizontalArrangement = Arrangement.Center
         ) {
             Button(
-                onClick = onCancel,
-                modifier = Modifier.padding(8.dp)
-            ) {
-                Text("Cancel")
-            }
-            Button(
                 onClick = {
-                    viewModel.saveNote(
-                        date = selectedDate.weekYear.toString() + "-" + (selectedDate.get(Calendar.MONTH) + 1) + "-" + selectedDate.get(Calendar.DAY_OF_MONTH),
-                        content = noteText
-                    )
-                    onNoteSaved()
+                    val formattedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(selectedDate.time)
+                    noteViewModel.saveNote(formattedDate, noteText)
+                    navController.popBackStack()
                 },
                 modifier = Modifier.padding(8.dp)
             ) {
@@ -68,3 +62,5 @@ fun NoteScreen(
         }
     }
 }
+
+
