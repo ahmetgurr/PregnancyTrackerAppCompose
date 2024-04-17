@@ -7,15 +7,18 @@ import kotlinx.coroutines.tasks.await
 
 class NotesRepository(private val firestore: FirebaseFirestore) {
 
-    suspend fun saveNote(date: String, content: String): Result<Boolean> =
+    suspend fun saveNote(date: String, content: String): Result<Note> =
         try {
-            val note = Note(date, content)
-            firestore.collection("users")
+            val note = Note(date = date, content = content) // Create a note object without providing id
+            val documentReference = firestore.collection("users")
                 .document(FirebaseAuth.getInstance().currentUser?.email ?: "")
                 .collection("notes")
-                .add(note)
-                .await()
-            Result.Success(true)
+                .document()
+
+            // Set the note object directly to Firestore and use the document ID as the note's ID
+            documentReference.set(note.copy(id = documentReference.id)).await()
+
+            Result.Success(note.copy(id = documentReference.id)) // Return the note with the correct ID
         } catch (e: Exception) {
             Result.Error(e)
         }

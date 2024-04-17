@@ -30,19 +30,26 @@ class NoteViewModel : ViewModel() {
 
     fun saveNote(date: String, content: String) {
         viewModelScope.launch {
-            _saveNoteResult.value = notesRepository.saveNote(date, content)
+            when (val result = notesRepository.saveNote(date, content)) {
+                is Result.Success -> {
+                    val savedNote = result.data
+                    // Now you have the saved note with the ID included
+                    // You can perform any additional actions here if needed
+                }
+                is Result.Error -> {
+                    // Handle error
+                }
+            }
         }
     }
+
+
+
+
 
     fun getNotesByDate(date: String) {
         viewModelScope.launch {
             _notesByDateResult.value = notesRepository.getNotesByDate(date)
-        }
-    }
-    fun saveSelectedDateToFirestore(selectedDate: Calendar) {
-        viewModelScope.launch {
-            val formattedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(selectedDate.time)
-            _saveNoteResult.value = notesRepository.saveNote(formattedDate, "")
         }
     }
 
