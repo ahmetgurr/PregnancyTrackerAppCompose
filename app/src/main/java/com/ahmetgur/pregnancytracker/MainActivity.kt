@@ -33,7 +33,10 @@ import com.ahmetgur.pregnancytracker.ui.theme.PregnancyTrackerTheme
 import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel
 import com.ahmetgur.pregnancytracker.viewmodel.CategoryViewModel
 import com.ahmetgur.pregnancytracker.viewmodel.NoteViewModel
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 
 class MainActivity : ComponentActivity() {
@@ -89,8 +92,10 @@ fun Navigation(
             MainScreen(
                 navController = navController,
                 noteViewModel = noteViewModel
-            ) {
-                selectedDate.value = it
+            ) { date ->
+                selectedDate.value = Calendar.getInstance().apply {
+                    time = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(date) ?: Date()
+                }
                 navController.navigate(Screen.NoteScreen.route)
             }
         }

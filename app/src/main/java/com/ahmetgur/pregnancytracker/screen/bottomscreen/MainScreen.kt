@@ -30,7 +30,7 @@ import java.util.Locale
 fun MainScreen(
     navController: NavController,
     noteViewModel: NoteViewModel,
-    onDateSelected: (Calendar) -> Unit
+    onDateSelected: (String) -> Unit
 ) {
     var selectedDate by remember { mutableStateOf(Calendar.getInstance()) }
 
@@ -56,7 +56,8 @@ fun MainScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    onDateSelected(selectedDate)
+                    val formattedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(selectedDate.time)
+                    onDateSelected(formattedDate)
                 }
         ) {
             Column(modifier = Modifier.padding(16.dp)) {

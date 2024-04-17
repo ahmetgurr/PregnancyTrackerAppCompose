@@ -9,19 +9,20 @@ class NotesRepository(private val firestore: FirebaseFirestore) {
 
     suspend fun saveNote(date: String, content: String): Result<Note> =
         try {
-            val note = Note(date = date, content = content) // Create a note object without providing id
+            val note = Note(id = date, date = date, content = content) // Tarih bilgisini ID olarak kullan
             val documentReference = firestore.collection("users")
                 .document(FirebaseAuth.getInstance().currentUser?.email ?: "")
                 .collection("notes")
-                .document()
+                .document(date) // Tarih bilgisini document ID olarak kullan
 
             // Set the note object directly to Firestore and use the document ID as the note's ID
-            documentReference.set(note.copy(id = documentReference.id)).await()
+            documentReference.set(note).await()
 
-            Result.Success(note.copy(id = documentReference.id)) // Return the note with the correct ID
+            Result.Success(note) // Return the note
         } catch (e: Exception) {
             Result.Error(e)
         }
+
 
     suspend fun getNotesByDate(date: String): Result<List<Note>> =
         try {
