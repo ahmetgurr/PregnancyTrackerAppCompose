@@ -8,15 +8,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.ahmetgur.pregnancytracker.data.Category
 import com.ahmetgur.pregnancytracker.screen.CategoryDetailScreen
 import com.ahmetgur.pregnancytracker.screen.MainView
@@ -33,10 +33,6 @@ import com.ahmetgur.pregnancytracker.ui.theme.PregnancyTrackerTheme
 import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel
 import com.ahmetgur.pregnancytracker.viewmodel.CategoryViewModel
 import com.ahmetgur.pregnancytracker.viewmodel.NoteViewModel
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 
 class MainActivity : ComponentActivity() {
@@ -78,37 +74,32 @@ fun Navigation(
 ) {
     val categoryViewModel: CategoryViewModel = viewModel()
     val viewstate by categoryViewModel.categoriesState
-    val selectedDate = remember { mutableStateOf(Calendar.getInstance()) } // selectedDate tanımlandı
 
     NavHost(
         navController = navController,
         startDestination = Screen.BottomScreen.MainScreen.route,
         modifier = Modifier.fillMaxSize()
     ) {
-
         // Main Screen
         composable(Screen.BottomScreen.MainScreen.route) {
             val noteViewModel: NoteViewModel = viewModel()
             MainScreen(
                 navController = navController,
                 noteViewModel = noteViewModel
-            ) { date ->
-                selectedDate.value = Calendar.getInstance().apply {
-                    time = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(date) ?: Date()
-                }
-                navController.navigate(Screen.NoteScreen.route)
-            }
-        }
-
-        //Note Screen From Main Screen
-        composable(Screen.NoteScreen.route) {
-            NoteScreen(
-                navController = navController,
-                noteViewModel = viewModel(),
-                selectedDate = selectedDate.value
             )
         }
 
+        //NoteScreen
+        composable(
+            route = Screen.NoteScreen.route + "/{date}",
+            arguments = listOf(navArgument("date") { type = NavType.StringType })
+        ) { backStackEntry ->
+            NoteScreen(
+                navController = navController,
+                noteViewModel = viewModel(),
+                selectedDate = backStackEntry.arguments?.getString("date") ?: ""
+            )
+        }
 
         // Discover Screen
         composable(Screen.BottomScreen.Discover.route) {
@@ -157,6 +148,7 @@ fun Navigation(
 }
 
 
+
 @Composable
 fun NavigationLogin(
     navController: NavHostController,
@@ -197,7 +189,6 @@ fun NavigationLogin(
         composable(Screen.LoginProceduresScreen.MainView.route) {
             MainView()
         }
-
 
     }
 }

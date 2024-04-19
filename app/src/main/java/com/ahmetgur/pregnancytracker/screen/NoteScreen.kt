@@ -1,6 +1,5 @@
 package com.ahmetgur.pregnancytracker.screen
 
-import java.util.Calendar
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -22,7 +21,7 @@ import java.util.Locale
 fun NoteScreen(
     navController: NavController,
     noteViewModel: NoteViewModel,
-    selectedDate: Calendar
+    selectedDate: String
 ) {
     var noteText by remember { mutableStateOf("") }
 
@@ -33,32 +32,21 @@ fun NoteScreen(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Not alanı
         TextField(
             value = noteText,
             onValueChange = { noteText = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-                .padding(8.dp),
+            modifier = Modifier.fillMaxWidth().height(200.dp).padding(8.dp),
             label = { Text("Enter your note") }
         )
 
-        // Butonlar
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
+        Button(
+            onClick = {
+                noteViewModel.saveNote(selectedDate, noteText)
+                navController.popBackStack()
+            },
+            modifier = Modifier.padding(8.dp)
         ) {
-            Button(
-                onClick = {
-                    val formattedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(selectedDate.time)
-                    noteViewModel.saveNote(formattedDate, noteText)
-                    navController.popBackStack()
-                },
-                modifier = Modifier.padding(8.dp)
-            ) {
-                Text("Save")
-            }
+            Text("Save")
         }
     }
 }

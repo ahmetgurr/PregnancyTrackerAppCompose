@@ -29,8 +29,7 @@ import java.util.Locale
 @Composable
 fun MainScreen(
     navController: NavController,
-    noteViewModel: NoteViewModel,
-    onDateSelected: (String) -> Unit
+    noteViewModel: NoteViewModel
 ) {
     var selectedDate by remember { mutableStateOf(Calendar.getInstance()) }
 
@@ -39,29 +38,28 @@ fun MainScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Takvim
         AndroidView(
             modifier = Modifier.fillMaxWidth(),
             factory = { CalendarView(it) },
             update = {
                 it.setOnDateChangeListener { _, year, month, dayOfMonth ->
+                    //selectedDate.set(year, month, dayOfMonth)
                     val calendar = Calendar.getInstance()
                     calendar.set(year, month, dayOfMonth)
                     selectedDate = calendar
                 }
             })
 
-        // Not kartı
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
                     val formattedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(selectedDate.time)
-                    onDateSelected(formattedDate)
+                    navController.navigate(Screen.NoteScreen.route + "/$formattedDate")
                 }
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                Text(text = "Selected Date: ${selectedDate.weekYear}-${selectedDate.get(Calendar.MONTH) + 1}-${selectedDate.get(Calendar.DAY_OF_MONTH)}")
+                Text(text = "Selected Date: ${SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(selectedDate.time)}")
             }
         }
     }
