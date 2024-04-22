@@ -1,6 +1,7 @@
 package com.ahmetgur.pregnancytracker.screen.bottomscreen
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.widget.CalendarView
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,15 +14,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import com.ahmetgur.pregnancytracker.Screen
 import com.ahmetgur.pregnancytracker.viewmodel.NoteViewModel
-import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
-
 import java.util.Calendar
 import java.util.Locale
 
@@ -43,10 +41,10 @@ fun MainScreen(
             factory = { CalendarView(it) },
             update = {
                 it.setOnDateChangeListener { _, year, month, dayOfMonth ->
-                    //selectedDate.set(year, month, dayOfMonth)
                     val calendar = Calendar.getInstance()
                     calendar.set(year, month, dayOfMonth)
                     selectedDate = calendar
+                    Log.d("MainScreen", "Selected date: ${selectedDate.time}")
                 }
             })
 
@@ -56,6 +54,9 @@ fun MainScreen(
                 .clickable {
                     val formattedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(selectedDate.time)
                     navController.navigate(Screen.NoteScreen.route + "/$formattedDate")
+
+                    noteViewModel.getNotesByDate(date = formattedDate)
+                    Log.d("MainScreen", "Selected date: $formattedDate")
                 }
         ) {
             Column(modifier = Modifier.padding(16.dp)) {

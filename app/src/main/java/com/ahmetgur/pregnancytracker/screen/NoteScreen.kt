@@ -1,11 +1,14 @@
 package com.ahmetgur.pregnancytracker.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -14,8 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ahmetgur.pregnancytracker.viewmodel.NoteViewModel
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 @Composable
 fun NoteScreen(
@@ -23,7 +24,16 @@ fun NoteScreen(
     noteViewModel: NoteViewModel,
     selectedDate: String
 ) {
+    // ViewModel'dan notları al, LiveData'yı State'e çevir, notes State'i güncellendiğinde noteText'i güncelle
+    LaunchedEffect(key1 = selectedDate) {
+        noteViewModel.getNotesByDate(selectedDate)
+    }
+    val notes = noteViewModel.notesByDateResult.observeAsState(initial = emptyList())
+
     var noteText by remember { mutableStateOf("") }
+    LaunchedEffect(notes.value) {
+        noteText = notes.value.firstOrNull()?.content ?: ""
+    }
 
     Column(
         modifier = Modifier
@@ -34,21 +44,37 @@ fun NoteScreen(
     ) {
         TextField(
             value = noteText,
-            onValueChange = { noteText = it },
-            modifier = Modifier.fillMaxWidth().height(200.dp).padding(8.dp),
+            onValueChange = { notes -> noteText = notes},
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .padding(8.dp),
             label = { Text("Enter your note") }
         )
 
-        Button(
-            onClick = {
-                noteViewModel.saveNote(selectedDate, noteText)
-                navController.popBackStack()
-            },
-            modifier = Modifier.padding(8.dp)
-        ) {
-            Text("Save")
+        Row {
+
+            Button(
+                onClick = {
+                    navController.popBackStack()
+                },
+                modifier = Modifier.padding(8.dp)
+            ) {
+                Text("Cancel")
+            }
+
+            Button(
+                onClick = {
+                    noteViewModel.saveNote(selectedDate, noteText)
+                    navController.popBackStack()
+                    Toast.makeText(navController.context, "Note saved", Toast.LENGTH_SHORT).show()
+                },
+                modifier = Modifier.padding(8.dp)
+            ) {
+                Text("Save")
+            }
+
         }
+
     }
 }
-
-

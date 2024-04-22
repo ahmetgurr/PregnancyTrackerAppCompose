@@ -1,5 +1,6 @@
 package com.ahmetgur.pregnancytracker.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,9 +10,6 @@ import com.ahmetgur.pregnancytracker.data.NotesRepository
 import com.ahmetgur.pregnancytracker.data.Result
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 class NoteViewModel : ViewModel() {
     private val notesRepository: NotesRepository
@@ -20,8 +18,9 @@ class NoteViewModel : ViewModel() {
     private val _saveNoteResult = MutableLiveData<Result<Boolean>>()
     val saveNoteResult: LiveData<Result<Boolean>> get() = _saveNoteResult
 
-    private val _notesByDateResult = MutableLiveData<Result<List<Note>>>()
-    val notesByDateResult: LiveData<Result<List<Note>>> get() = _notesByDateResult
+    private val _notesByDateResult = MutableLiveData<List<Note>>()
+    val notesByDateResult: LiveData<List<Note>> get() = _notesByDateResult
+
 
     init {
         notesRepository = NotesRepository(FirebaseFirestore.getInstance())
@@ -33,24 +32,28 @@ class NoteViewModel : ViewModel() {
             when (val result = notesRepository.saveNote(date, content)) {
                 is Result.Success -> {
                     val savedNote = result.data
-                    // Now you have the saved note with the ID included
-                    // You can perform any additional actions here if needed
+                    _saveNoteResult.value = Result.Success(true)
+                    Log.d("NoteViewModel", "saveNote: $savedNote")
                 }
                 is Result.Error -> {
-                    // Handle error
+                    Log.d("NoteViewModel", "saveNoteError: ${result.exception.message}")
                 }
             }
         }
     }
 
-
-
-
-
     fun getNotesByDate(date: String) {
         viewModelScope.launch {
-            _notesByDateResult.value = notesRepository.getNotesByDate(date)
+            when (val result = notesRepository.getNotesByDate(date)) {
+                is Result.Success -> {
+                    val notes = result.data
+                    _notesByDateResult.value = notes
+                    Log.d("NoteViewModel", "getNotesByDate: $notes")
+                }
+                is Result.Error -> {
+                    Log.d("NoteViewModel", "getNotesByDateError: ${result.exception.message}")
+                }
+            }
         }
     }
-
 }

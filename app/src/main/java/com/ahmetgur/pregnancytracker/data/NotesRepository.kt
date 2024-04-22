@@ -1,6 +1,6 @@
 package com.ahmetgur.pregnancytracker.data
 
-import com.ahmetgur.pregnancytracker.data.Result
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -9,21 +9,20 @@ class NotesRepository(private val firestore: FirebaseFirestore) {
 
     suspend fun saveNote(date: String, content: String): Result<Note> =
         try {
-            val note = Note(id = date, date = date, content = content) // Tarih bilgisini ID olarak kullan
+            val note = Note(id = date, date = date, content = content) // Tarih bilgisini ID olarak ata
             val documentReference = firestore.collection("users")
                 .document(FirebaseAuth.getInstance().currentUser?.email ?: "")
                 .collection("notes")
-                .document(date) // Tarih bilgisini document ID olarak kullan
+                .document(date) // Tarih bilgisini document ID olarak ata
 
-            // Set the note object directly to Firestore and use the document ID as the note's ID
             documentReference.set(note).await()
 
-            Result.Success(note) // Return the note
+            Result.Success(note)
         } catch (e: Exception) {
             Result.Error(e)
         }
 
-
+    // NoteScreen sayfasına iletilen tarih bilgisine göre notları getirmek için
     suspend fun getNotesByDate(date: String): Result<List<Note>> =
         try {
             val querySnapshot = firestore.collection("users")
@@ -33,13 +32,14 @@ class NotesRepository(private val firestore: FirebaseFirestore) {
                 .get()
                 .await()
 
-            val notes = mutableListOf<Note>()
-            for (document in querySnapshot.documents) {
-                val note = document.toObject(Note::class.java)
-                note?.let { notes.add(it) }
+            val notes = querySnapshot.documents.mapNotNull { document ->
+                document.toObject(Note::class.java)
             }
+            Log.d("NotesRepository", "getNotesByDateSucces: $notes")
             Result.Success(notes)
         } catch (e: Exception) {
+            Log.d("NotesRepository", "getNotesByDateError: ${e.message}")
             Result.Error(e)
+
         }
 }
