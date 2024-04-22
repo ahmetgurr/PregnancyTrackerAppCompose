@@ -20,7 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
@@ -28,7 +28,6 @@ import androidx.compose.material.ScaffoldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.primarySurface
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -105,7 +104,11 @@ fun MainView() {
 
     val bottomBar: @Composable () -> Unit = {
         if (currentScreen is DrawerScreen || currentScreen == BottomScreen.MainScreen) {
-            BottomNavigation(Modifier.wrapContentSize()) {
+            BottomNavigation(
+                modifier = Modifier
+                    .wrapContentSize(),
+                backgroundColor = MaterialTheme.colorScheme.primary,
+            ) {
                 screensInBottom.forEach { item ->
                     val isSelected = currentRoute == item.bRoute
                     Log.d(
@@ -113,7 +116,8 @@ fun MainView() {
                         "Item: ${item.bTitle}, Current Route: $currentRoute, Is Selected: $isSelected"
                     )
                     val tint = if (isSelected) Color.White else Color.Black
-                    BottomNavigationItem(selected = currentRoute == item.bRoute,
+                    BottomNavigationItem(
+                        selected = currentRoute == item.bRoute,
                         onClick = {
                             navController.navigate(item.bRoute)
                             title.value = item.bTitle
@@ -128,8 +132,7 @@ fun MainView() {
                         },
                         label = { Text(text = item.bTitle, color = tint) },
                         selectedContentColor = Color.White,
-                        unselectedContentColor = Color.Black
-
+                        unselectedContentColor = Color.Black,
                     )
                 }
             }
@@ -157,6 +160,9 @@ fun MainView() {
         }
     ) {
         Scaffold(
+            contentColor = MaterialTheme.colorScheme.onSurface,
+            backgroundColor = MaterialTheme.colorScheme.background,
+            drawerBackgroundColor = MaterialTheme.colorScheme.surface,
             bottomBar = bottomBar,
             topBar = {
                 TopAppBar(title = { Text(title.value) },
@@ -242,7 +248,8 @@ fun DrawerItem(
         )
         Text(
             text = item.dTitle,
-            style = MaterialTheme.typography.h5
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.bodyMedium
         )
     }
 }
@@ -260,7 +267,7 @@ fun MoreBottomSheet(
         Modifier
             .fillMaxWidth()
             .height(300.dp)
-            .background(MaterialTheme.colors.primarySurface)
+            .background(MaterialTheme.colorScheme.primary)
             .clickable { onMoreBottomSheetClicked() }
     ) {
         Column(modifier = modifier.padding(16.dp), verticalArrangement = Arrangement.SpaceBetween) {
@@ -281,7 +288,11 @@ fun MoreBottomSheet(
             }
             Row(modifier = modifier
                 .padding(16.dp)
-                .clickable { }) {
+                .clickable {
+                    navController.navigate(Screen.TryScreen.route)
+                    onMoreBottomSheetClicked()
+                }
+            ) {
                 Icon(
                     modifier = Modifier.padding(end = 8.dp),
                     painter = painterResource(id = R.drawable.ic_baseline_share_24),

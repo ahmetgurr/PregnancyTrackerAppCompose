@@ -15,6 +15,45 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
+private val LightColorScheme = lightColorScheme(
+    primary = Teal,
+    secondary = LightTeal,
+    tertiary = Peach,
+)
+private val DarkColorScheme = darkColorScheme(
+    primary = Teal,
+    secondary = LightTeal,
+    tertiary = Peach,
+
+)
+
+@Composable
+fun PregnancyTrackerTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
+) {
+    val colorScheme =
+        if (!darkTheme) {
+            LightColorScheme
+        } else {
+            DarkColorScheme
+        }
+    // Dynamic color is available on Android 12+
+    val dynamicColor = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+    val colors = when {
+        dynamicColor && darkTheme -> dynamicDarkColorScheme(LocalContext.current)
+        dynamicColor && !darkTheme -> dynamicLightColorScheme(LocalContext.current)
+        darkTheme -> DarkColorScheme
+        else -> LightColorScheme
+    }
+    MaterialTheme(
+        colorScheme = colorScheme,
+        content = content
+    )
+}
+
+
+/*
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
     secondary = PurpleGrey80,
@@ -68,3 +107,5 @@ fun PregnancyTrackerTheme(
         content = content
     )
 }
+
+ */

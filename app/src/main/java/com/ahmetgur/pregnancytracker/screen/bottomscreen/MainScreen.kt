@@ -3,10 +3,12 @@ package com.ahmetgur.pregnancytracker.screen.bottomscreen
 import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.CalendarView
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -66,7 +68,10 @@ fun MainScreen(
                 }
             })
 
-        Card(
+        ElevatedCard(
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 6.dp
+            ),
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
@@ -88,27 +93,5 @@ fun MainScreen(
             }
 
         }
-    }
-}
-
-@Composable
-@Preview
-fun MainScreenPreview() {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable {
-            }
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = "Selected Date: ",
-                color = Color.Black,
-                style = TextStyle(fontWeight = FontWeight.Bold),
-                fontSize = 20.sp
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Note:")
-        }
-
     }
 }

@@ -29,7 +29,16 @@ val Pink200 = Color(0xFFF48FB1)
 val Pink500 = Color(0xFFE91E63)
 val Pink700 = Color(0xFFC2185B)
 val RichBlack = Color(0xFF050505)
-val BlueMunsell = Color(0xFF0B7B8A)
-val Bone = Color(0xFFDDDBCB)
-val Alabaster = Color(0xFFE9F5F2)
+
+val Teal = Color(0xFF0B7B8A)
+val Peach = Color(0xFFF8A39E)
+val LightTeal = Color(0xFF84ADB3)
+
+val md_theme_light_primary = Color(0xFF476810)
+val md_theme_light_onPrimary = Color(0xFFFFFFFF)
+val md_theme_light_primaryContainer = Color(0xFFC7F089)
+
+val md_theme_dark_primary = Color(0xFFACD370)
+val md_theme_dark_onPrimary = Color(0xFF213600)
+val md_theme_dark_primaryContainer = Color(0xFF324F00)
 

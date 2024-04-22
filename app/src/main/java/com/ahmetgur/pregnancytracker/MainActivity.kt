@@ -21,6 +21,7 @@ import com.ahmetgur.pregnancytracker.data.Category
 import com.ahmetgur.pregnancytracker.screen.CategoryDetailScreen
 import com.ahmetgur.pregnancytracker.screen.MainView
 import com.ahmetgur.pregnancytracker.screen.NoteScreen
+import com.ahmetgur.pregnancytracker.screen.TryScreen
 import com.ahmetgur.pregnancytracker.screen.bottomscreen.DiscoverScreen
 import com.ahmetgur.pregnancytracker.screen.bottomscreen.MainScreen
 import com.ahmetgur.pregnancytracker.screen.bottomscreen.Profile
@@ -141,6 +142,13 @@ fun Navigation(
                 onNavigateToSignUp = { navController.navigate(Screen.LoginProceduresScreen.Register.route) },
                 onNavigateToReset = { navController.navigate(Screen.LoginProceduresScreen.Reset.route) },
                 onSignInSuccess = { navController.navigate(Screen.LoginProceduresScreen.MainView.route) }
+            )
+        }
+
+        composable(Screen.TryScreen.route) {
+            TryScreen(
+                authViewModel = authViewModel,
+                navController = navController
             )
         }
 

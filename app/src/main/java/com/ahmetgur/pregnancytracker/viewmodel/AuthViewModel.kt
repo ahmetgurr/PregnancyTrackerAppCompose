@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.ahmetgur.pregnancytracker.Injection
+import com.ahmetgur.pregnancytracker.data.Note
+import com.ahmetgur.pregnancytracker.data.User
 import com.ahmetgur.pregnancytracker.data.UserRepository
 import kotlinx.coroutines.launch
 

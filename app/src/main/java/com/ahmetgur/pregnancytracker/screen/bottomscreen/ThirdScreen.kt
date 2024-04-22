@@ -1,7 +1,6 @@
 package com.ahmetgur.pregnancytracker.screen.bottomscreen
 
 import android.app.Activity
-import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,14 +22,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
-import com.ahmetgur.pregnancytracker.MainActivity
 import com.ahmetgur.pregnancytracker.Screen
 import com.ahmetgur.pregnancytracker.data.Prf
 import com.ahmetgur.pregnancytracker.data.profiles
 import com.ahmetgur.pregnancytracker.screen.CustomAlertDialog
-import com.ahmetgur.pregnancytracker.util.Util
 import com.ahmetgur.pregnancytracker.util.Util.logoutAndNavigateToLogin
 import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel
 

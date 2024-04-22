@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,10 +38,10 @@ fun CategoryDetailScreen(category: Category) {
         Text(
             text = category.strCategory,
             textAlign = TextAlign.Start,
-            style = MaterialTheme.typography.h4,
+            style = MaterialTheme.typography.displayMedium,
             modifier = Modifier.padding(2.dp),
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colors.primary,
+            color = MaterialTheme.colorScheme.onSurface,
         )
 
         Text(
