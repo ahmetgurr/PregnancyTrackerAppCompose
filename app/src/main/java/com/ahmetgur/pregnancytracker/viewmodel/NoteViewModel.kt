@@ -56,4 +56,18 @@ class NoteViewModel : ViewModel() {
             }
         }
     }
+
+    fun deleteNoteById(noteId: String) {
+        viewModelScope.launch {
+            when (val result = notesRepository.deleteNoteById(noteId)) {
+                is Result.Success -> {
+                    val isDeleted = result.data
+                    Log.d("NoteViewModel", "deleteNoteById: $isDeleted")
+                }
+                is Result.Error -> {
+                    Log.d("NoteViewModel", "deleteNoteByIdError: ${result.exception.message}")
+                }
+            }
+        }
+    }
 }

@@ -42,4 +42,19 @@ class NotesRepository(private val firestore: FirebaseFirestore) {
             Result.Error(e)
 
         }
+
+    // Not silme işlemi
+    suspend fun deleteNoteById(noteId: String): Result<Boolean> =
+        try {
+            firestore.collection("users")
+                .document(FirebaseAuth.getInstance().currentUser?.email ?: "")
+                .collection("notes")
+                .document(noteId)
+                .delete()
+                .await()
+
+            Result.Success(true)
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
 }

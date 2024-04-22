@@ -29,8 +29,8 @@ fun NoteScreen(
         noteViewModel.getNotesByDate(selectedDate)
     }
     val notes = noteViewModel.notesByDateResult.observeAsState(initial = emptyList())
-
     var noteText by remember { mutableStateOf("") }
+
     LaunchedEffect(notes.value) {
         noteText = notes.value.firstOrNull()?.content ?: ""
     }
@@ -53,6 +53,17 @@ fun NoteScreen(
         )
 
         Row {
+
+            Button(
+                onClick = {
+                    noteViewModel.deleteNoteById(selectedDate)
+                    navController.popBackStack()
+                    Toast.makeText(navController.context, "Note deleted", Toast.LENGTH_SHORT).show()
+                },
+                modifier = Modifier.padding(8.dp)
+            ) {
+                Text("Delete")
+            }
 
             Button(
                 onClick = {
