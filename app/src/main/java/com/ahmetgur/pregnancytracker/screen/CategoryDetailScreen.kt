@@ -27,14 +27,6 @@ fun CategoryDetailScreen(category: Category) {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            text = category.strCategory,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.h4,
-            modifier = Modifier.padding(2.dp),
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colors.primary,
-        )
         Image(
             painter = rememberAsyncImagePainter(category.strCategoryThumb),
             contentDescription = "${category.strCategory} image",
@@ -42,6 +34,16 @@ fun CategoryDetailScreen(category: Category) {
                 .wrapContentSize()
                 .aspectRatio(1f)
         )
+
+        Text(
+            text = category.strCategory,
+            textAlign = TextAlign.Start,
+            style = MaterialTheme.typography.h4,
+            modifier = Modifier.padding(2.dp),
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colors.primary,
+        )
+
         Text(
             text = category.strCategoryDescription,
             textAlign = TextAlign.Justify,
