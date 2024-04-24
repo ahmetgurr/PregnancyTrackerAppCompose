@@ -1,93 +1,225 @@
 package com.ahmetgur.pregnancytracker.screen.drawerscreen
 
+import android.app.Activity
+import android.text.InputType.TYPE_CLASS_PHONE
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.TextButton
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ahmetgur.pregnancytracker.R
-import com.ahmetgur.pregnancytracker.util.Util.logoutAndNavigateToLogin
+import com.ahmetgur.pregnancytracker.util.Util
 import com.ahmetgur.pregnancytracker.util.Util.showLogoutDialog
 import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel
 
+
 @Composable
-fun AccountView(authViewModel: AuthViewModel, navController: NavController){
-    // Kullanıcıdan onay almak için bir MutableState kullanıyoruz
+fun AccountView(
+    authViewModel: AuthViewModel,
+    navController: NavController
+) {
     val showDialog = remember { mutableStateOf(false) }
-    val context = LocalContext.current
+    val context = LocalContext.current as Activity
+
+    var email by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
+    var phone by remember { mutableStateOf("") }
+    var weight by remember { mutableStateOf("") }
+    var height by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .verticalScroll(rememberScrollState())
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Row (
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+        AccountCard()
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        InformationCard(
+            username = username,
+            email = email,
+            phone = phone,
+            weight = weight,
+            height = height,
+            onUsernameChange = { username = it },
+            onEmailChange = { email = it },
+            onPhoneChange = { phone = it },
+            onWeightChange = { weight = it },
+            onHeightChange = { height = it },
+            onUpdateInformationClick = { //TODO: updateInformationInFirestore(username, email, phone)
+            }
         ){
-            Row(){
-                Icon(imageVector= Icons.Default.AccountCircle ,
-                    contentDescription = "Account",
-                    modifier = Modifier.padding(end = 8.dp)
-                )
-                Column {
-                    Text("Ahmet GÜR")
-                    Text("@ahmetgur")
-                }
-            }
-            IconButton(onClick = {}) {
-                Icon(imageVector = Icons.Default.KeyboardArrowRight,
-                    contentDescription = null)
-            }
+            showDialog.value = true
         }
 
-        Row(modifier = Modifier.padding(top = 16.dp)) {
-            Icon(
-                painter = painterResource(id = R.drawable.baseline_account_circle_24),
-                contentDescription = "My Profile",
-                modifier = Modifier.padding(end = 8.dp)
-            )
-            Text(text = "My List")
-        }
+        Spacer(modifier = Modifier.height(16.dp))
 
-        Divider()
-
-        // Logout dialog'u göstermek için tıklandığında showDialog state'ini güncelle
-        TextButton(
-            modifier = Modifier.padding(top = 32.dp),
-            onClick = { showDialog.value = true },
-            content = {
-                Text("Delete Account", color = MaterialTheme.colorScheme.error)
-            },
-
-        )
-        // Utils'den gelen Composable fonksiyonu kullan
-        showLogoutDialog(
-            showDialog = showDialog,
-            authViewModel = authViewModel,
-            onConfirm = { logoutAndNavigateToLogin(authViewModel, context, navController) },
-            onDismiss = {}
-        )
-
-
+        AccountCard()
     }
 
+    showLogoutDialog(
+        showDialog = showDialog,
+        authViewModel = authViewModel,
+        onConfirm = { Util.logoutAndNavigateToLogin(authViewModel, context, navController) },
+        onDismiss = {}
+    )
+}
+
+@Composable
+fun AccountCard() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.baseline_account_circle_24),
+                contentDescription = "Account",
+                contentScale = ContentScale.Fit,
+                modifier = Modifier
+                    .height(180.dp)
+                    .fillMaxWidth()
+            )
+            Text(
+                text = "Username",
+                textAlign = TextAlign.Center,
+                style = typography.headlineMedium,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+    }
+}
+
+@Composable
+fun InformationCard(
+    username: String,
+    email: String,
+    phone: String,
+    weight: String,
+    height: String,
+    onUsernameChange: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
+    onPhoneChange: (String) -> Unit,
+    onWeightChange: (String) -> Unit,
+    onHeightChange: (String) -> Unit,
+    onUpdateInformationClick: () -> Unit,
+    onDeleteAccountClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            OutlinedTextField(
+                value = username,
+                onValueChange = onUsernameChange,
+                label = { Text("Username") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            )
+
+            OutlinedTextField(
+                value = email,
+                onValueChange = onEmailChange,
+                label = { Text("Email Address") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                enabled = false
+            )
+
+            OutlinedTextField(
+                value = phone,
+                onValueChange = onPhoneChange,
+                label = { Text("Phone Number") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
+            )
+            OutlinedTextField(
+                value = weight,
+                onValueChange = onWeightChange,
+                label = { Text("Pre-pregnancy weight (kg)") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
+
+            OutlinedTextField(
+                value = height,
+                onValueChange = onHeightChange,
+                label = { Text("Height (cm)") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
+
+            TextButton(
+                modifier = Modifier.padding(top = 32.dp),
+                onClick = onUpdateInformationClick,
+                content = {
+                    Text(
+                        text = "Update Information",
+                    )
+                },
+            )
+
+            TextButton(
+                modifier = Modifier.padding(top = 32.dp),
+                onClick = onDeleteAccountClick,
+                content = {
+                    Text(
+                        text = "Delete Account",
+                        color = MaterialTheme.colorScheme.error
+                    )
+                },
+            )
+        }
+    }
 }

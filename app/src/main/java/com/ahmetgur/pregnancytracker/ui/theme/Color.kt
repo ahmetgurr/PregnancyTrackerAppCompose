@@ -31,8 +31,8 @@ val Pink700 = Color(0xFFC2185B)
 val RichBlack = Color(0xFF050505)
 
 val Teal = Color(0xFF0B7B8A)
+val LightTeal = Color(0xFFBACED1)
 val Peach = Color(0xFFF8A39E)
-val LightTeal = Color(0xFF84ADB3)
 
 val md_theme_light_primary = Color(0xFF476810)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)
