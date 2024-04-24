@@ -36,7 +36,8 @@ fun PregnancyTrackerTheme(
         if (!darkTheme) {
             LightColorScheme
         } else {
-            DarkColorScheme
+            //DarkColorScheme
+            LightColorScheme
         }
     // Dynamic color is available on Android 12+
     val dynamicColor = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
