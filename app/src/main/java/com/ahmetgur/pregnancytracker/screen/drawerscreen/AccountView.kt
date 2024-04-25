@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +17,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
@@ -69,6 +72,7 @@ fun AccountView(
         Spacer(modifier = Modifier.height(16.dp))
 
         InformationCard(
+            title = "Information",
             username = username,
             email = email,
             phone = phone,
@@ -102,8 +106,8 @@ fun AccountView(
 fun AccountCard() {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-    ) {
+            .fillMaxWidth(),
+        ) {
         Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.Center,
@@ -130,6 +134,7 @@ fun AccountCard() {
 
 @Composable
 fun InformationCard(
+    title: String,
     username: String,
     email: String,
     phone: String,
@@ -145,22 +150,36 @@ fun InformationCard(
 ) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.secondary)) {
+                // Başlık
+                Text(
+                    text = title,
+                    style = typography.headlineSmall,
+                    modifier = Modifier
+                        .padding(8.dp)
+                )
+            }
+
+            // Username TextField
             OutlinedTextField(
                 value = username,
                 onValueChange = onUsernameChange,
                 label = { Text("Username") },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp)
+                    .padding(8.dp),
             )
 
+            // Email TextField
             OutlinedTextField(
                 value = email,
                 onValueChange = onEmailChange,
@@ -171,6 +190,7 @@ fun InformationCard(
                 enabled = false
             )
 
+            // Phone TextField
             OutlinedTextField(
                 value = phone,
                 onValueChange = onPhoneChange,
@@ -180,6 +200,8 @@ fun InformationCard(
                     .padding(8.dp),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
             )
+
+            // Weight TextField
             OutlinedTextField(
                 value = weight,
                 onValueChange = onWeightChange,
@@ -190,6 +212,7 @@ fun InformationCard(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
 
+            // Height TextField
             OutlinedTextField(
                 value = height,
                 onValueChange = onHeightChange,
@@ -200,16 +223,19 @@ fun InformationCard(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
 
+            // Update Information Button
             TextButton(
                 modifier = Modifier.padding(top = 32.dp),
                 onClick = onUpdateInformationClick,
                 content = {
                     Text(
                         text = "Update Information",
+                        color = MaterialTheme.colorScheme.primary
                     )
                 },
             )
 
+            // Delete Account Button
             TextButton(
                 modifier = Modifier.padding(top = 32.dp),
                 onClick = onDeleteAccountClick,
@@ -223,3 +249,4 @@ fun InformationCard(
         }
     }
 }
+

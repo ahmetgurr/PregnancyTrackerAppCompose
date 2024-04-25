@@ -34,6 +34,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -153,7 +154,6 @@ fun MainView() {
                 onMoreBottomSheetClicked = {
                     scope.launch {
                         modalSheetState.hide()
-
                     }
                 }
             )
@@ -163,9 +163,12 @@ fun MainView() {
             contentColor = MaterialTheme.colorScheme.onSurface,
             backgroundColor = MaterialTheme.colorScheme.background,
             drawerBackgroundColor = MaterialTheme.colorScheme.surface,
+            drawerShape = MaterialTheme.shapes.medium,
             bottomBar = bottomBar,
             topBar = {
-                TopAppBar(title = { Text(title.value) },
+                TopAppBar(
+                    title = { Text(title.value) },
+                    colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primary),
                     actions = {
                         IconButton(
                             onClick = {

@@ -5,6 +5,8 @@ import android.util.Log
 import android.widget.CalendarView
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -22,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -75,13 +78,17 @@ fun MainScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    val formattedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(selectedDate.time)
+                    val formattedDate = SimpleDateFormat(
+                        "yyyy-MM-dd",
+                        Locale.getDefault()
+                    ).format(selectedDate.time)
                     navController.navigate(Screen.NoteScreen.route + "/$formattedDate")
                     noteViewModel.getNotesByDate(date = formattedDate)
                     Log.d("MainScreen", "Selected date: $formattedDate")
                 }
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.padding(16.dp)
+            ) {
                 val noteContent = notes.value.firstOrNull()?.content ?: "No notes for this date."
                 Text(text = "Selected Date: ${dateFormat.format(selectedDate.time)}",
                     color = Color.Black,
@@ -89,7 +96,14 @@ fun MainScreen(
                     fontSize = 20.sp
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Note: $noteContent")
+                Text(
+                    text = "Note: $noteContent",
+                    color = Color.Black,
+                    style = TextStyle(fontWeight = FontWeight.Normal),
+                    fontSize = 16.sp,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 8,
+                )
             }
 
         }

@@ -47,13 +47,12 @@ fun NoteScreen(
             onValueChange = { notes -> noteText = notes},
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
+                .heightIn(min = 200.dp, max = 600.dp)
                 .padding(8.dp),
             label = { Text("Enter your note") }
         )
 
         Row {
-
             Button(
                 onClick = {
                     noteViewModel.deleteNoteById(selectedDate)
