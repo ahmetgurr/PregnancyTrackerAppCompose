@@ -36,6 +36,9 @@ class AuthViewModel : ViewModel() {
     private val _authResult = MutableLiveData<Result<Boolean>>()
     val authResult: LiveData<Result<Boolean>> get() = _authResult
 
+    private val _userData = MutableLiveData<Result<User>>()
+    val userData: LiveData<Result<User>> get() = _userData
+
     fun login(email: String, password: String) {
         viewModelScope.launch {
             _authResult.value = userRepository.login(email, password)
@@ -66,6 +69,12 @@ class AuthViewModel : ViewModel() {
         viewModelScope.launch {
             userRepository.deleteAccount()
             checkLoginStatus()
+        }
+    }
+    fun getUserData() {
+        viewModelScope.launch {
+            _userData.value = userRepository.getUserData()
+            userRepository.getUserData()
         }
     }
 

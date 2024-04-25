@@ -1,9 +1,10 @@
 package com.ahmetgur.pregnancytracker.screen.drawerscreen
 
 import android.app.Activity
-import android.text.InputType.TYPE_CLASS_PHONE
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,37 +14,48 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.ahmetgur.pregnancytracker.R
 import com.ahmetgur.pregnancytracker.util.Util
 import com.ahmetgur.pregnancytracker.util.Util.showLogoutDialog
 import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel
+import com.google.firebase.firestore.auth.User
+import com.ahmetgur.pregnancytracker.data.Result
 
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Composable
 fun AccountView(
@@ -53,11 +65,44 @@ fun AccountView(
     val showDialog = remember { mutableStateOf(false) }
     val context = LocalContext.current as Activity
 
-    var email by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var phone by remember { mutableStateOf("") }
     var weight by remember { mutableStateOf("") }
     var height by remember { mutableStateOf("") }
+    var age by remember { mutableStateOf("") }
+
+    var dueDate by remember { mutableStateOf("") }
+    var babyName by remember { mutableStateOf("") }
+    var babyWeight by remember { mutableStateOf("") }
+
+    // ViewModel'dan kullanıcı verilerini al, textlerin içine yerleştir
+    LaunchedEffect(key1 = authViewModel.isLoggedIn()) {
+        if (authViewModel.isLoggedIn()) {
+            authViewModel.getUserData()
+        }
+    }
+
+    val userData = authViewModel.userData.observeAsState()
+
+        when (val result = userData.value) {
+            is Result.Success -> {
+                val user = result.data
+                username = user.firstName
+                email = user.email
+                phone = user.phone
+                weight = user.weight
+                height = user.height
+                age = user.age
+
+            }
+            is Result.Error -> {
+                Log.e("AccountView", "Error getting user data: ${result.exception.message}", result.exception)
+            }
+
+            else -> {
+                Log.d("AccountView", "Loading user data")}
+        }
 
     Column(
         modifier = Modifier
@@ -72,17 +117,19 @@ fun AccountView(
         Spacer(modifier = Modifier.height(16.dp))
 
         InformationCard(
-            title = "Information",
+            title = "My Health Information",
             username = username,
             email = email,
             phone = phone,
             weight = weight,
             height = height,
+            age = age,
             onUsernameChange = { username = it },
             onEmailChange = { email = it },
             onPhoneChange = { phone = it },
             onWeightChange = { weight = it },
             onHeightChange = { height = it },
+            onAgeChange = { age = it },
             onUpdateInformationClick = { //TODO: updateInformationInFirestore(username, email, phone)
             }
         ){
@@ -91,7 +138,20 @@ fun AccountView(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        AccountCard()
+        InformationCardBaby(
+            title = "My Baby's Health",
+            babyName = babyName,
+            babyWeight = babyWeight,
+            dueDate = dueDate,
+            babyGender = "",
+            onBabyNameChange = { babyName = it },
+            onBabyWeightChange = { babyWeight = it },
+            onDueDateChange = { dueDate = it },
+            onBabyGenderChange = {  },
+            onUpdateInformationClick = { //TODO: updateInformationInFirestore(username, email, phone)
+            }
+        )
+
     }
 
     showLogoutDialog(
@@ -140,11 +200,13 @@ fun InformationCard(
     phone: String,
     weight: String,
     height: String,
+    age : String,
     onUsernameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
     onPhoneChange: (String) -> Unit,
     onWeightChange: (String) -> Unit,
     onHeightChange: (String) -> Unit,
+    onAgeChange: (String) -> Unit,
     onUpdateInformationClick: () -> Unit,
     onDeleteAccountClick: () -> Unit
 ) {
@@ -222,6 +284,17 @@ fun InformationCard(
                     .padding(8.dp),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
+            // Age TextField
+            OutlinedTextField(
+                value = age,
+                onValueChange = onAgeChange,
+                label = { Text("Your age") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
+
 
             // Update Information Button
             TextButton(
@@ -250,3 +323,125 @@ fun InformationCard(
     }
 }
 
+@Composable
+fun InformationCardBaby(
+    title: String,
+    dueDate: String,
+    babyName: String,
+    babyWeight: String,
+    babyGender: String,
+    onDueDateChange: (String) -> Unit,
+    onBabyNameChange: (String) -> Unit,
+    onBabyWeightChange: (String) -> Unit,
+    onBabyGenderChange: (String) -> Unit,
+    onUpdateInformationClick: () -> Unit,
+) {
+
+    // Baby Gender Dropdown Menu
+    val genderOptions = listOf("♂ Male", "♀ Female", " x Unknown")
+    var showGenderPicker by remember { mutableStateOf(false) }
+    val selectedGender = remember { mutableStateOf(babyGender) }
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth(),
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.secondary)) {
+                // Başlık
+                Text(
+                    text = title,
+                    style = typography.headlineSmall,
+                    modifier = Modifier
+                        .padding(8.dp)
+                )
+            }
+
+            // dueDate TextField
+            OutlinedTextField(
+                value = dueDate,
+                onValueChange = onDueDateChange,
+                label = { Text("Due date / weeks pregnant") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
+
+            // BabyName TextField
+            OutlinedTextField(
+                value = babyName,
+                onValueChange = onBabyNameChange,
+                label = { Text("Baby's nickname") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+            )
+
+            // babyWeight TextField
+            OutlinedTextField(
+                value = babyWeight,
+                onValueChange = onBabyWeightChange,
+                label = { Text("Baby's birth weight (kg)") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
+
+            // babyGender TextField
+            OutlinedTextField(
+                value = selectedGender.value,
+                onValueChange = { selectedGender.value = it },
+                label = { Text("Baby's gender") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+                    .clickable { showGenderPicker = true },
+                readOnly = true,
+                trailingIcon = {
+                    IconButton(onClick = { showGenderPicker = true }) {
+                        Icon( contentDescription = "Select Gender", imageVector = Icons.Default.ArrowDropDown)
+                    }
+                },
+            )
+            if (showGenderPicker) {
+                Dialog(onDismissRequest = { showGenderPicker = false }) {
+                    Column(
+                        modifier = Modifier
+                            .padding(16.dp)
+                    ) {
+                        genderOptions.forEach { gender ->
+                            DropdownMenuItem(onClick = {
+                                selectedGender.value = gender
+                                onBabyGenderChange(gender)
+                                showGenderPicker = false
+                            }) {
+                                Text(text = gender, color = colorScheme.primary, style = typography.headlineLarge, textAlign = TextAlign.Center)
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Update Information Button
+            TextButton(
+                modifier = Modifier.padding(top = 32.dp),
+                onClick = onUpdateInformationClick,
+                content = {
+                    Text(
+                        text = "Update Information",
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                },
+            )
+
+        }
+    }
+}
