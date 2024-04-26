@@ -10,11 +10,11 @@ class UserRepository(
     private val auth: FirebaseAuth,
     private val firestore: FirebaseFirestore)
 {
-    suspend fun signUp(email: String, password: String, firstName: String, lastName: String
+    suspend fun signUp(email: String, password: String, username: String
     ): Result<Boolean> =
         try {
             auth.createUserWithEmailAndPassword(email, password).await()
-            val user = User(firstName, lastName, email)
+            val user = User(username, email)
             saveUserToFirestore(user)
             Result.Success(true)
         }catch (e: Exception) {
@@ -72,4 +72,17 @@ class UserRepository(
         } catch (e: Exception) {
             Result.Error(e)
         }
+
+    suspend fun updateUserData(user: User): Result<User> =
+        try {
+            firestore.collection("users")
+                .document(auth.currentUser?.email ?: "")
+                .set(user)
+                .await()
+            Result.Success(user)
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
+
+
 }

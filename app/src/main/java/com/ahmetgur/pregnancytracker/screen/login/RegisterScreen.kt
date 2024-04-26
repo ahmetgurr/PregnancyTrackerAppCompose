@@ -39,8 +39,7 @@ fun RegisterScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var repeatPassword by remember { mutableStateOf("") }
-    var firstName by remember { mutableStateOf("") }
-    var lastName by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
     val context = LocalContext.current
 
     Column(
@@ -98,17 +97,9 @@ fun RegisterScreen(
         )
 
         OutlinedTextField(
-            value = firstName,
-            onValueChange = { firstName = it },
-            label = { Text("First Name") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-        )
-        OutlinedTextField(
-            value = lastName,
-            onValueChange = { lastName = it },
-            label = { Text("Last Name") },
+            value = username,
+            onValueChange = { username = it },
+            label = { Text("Username") },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
@@ -118,11 +109,10 @@ fun RegisterScreen(
                 if (password != repeatPassword) {
                     Toast.makeText(context, "Passwords do not match", Toast.LENGTH_SHORT).show()
                 } else {
-                    authViewModel.signUp(email, password, firstName, lastName)
+                    authViewModel.signUp(email, password, username)
                     email = ""
                     password = ""
-                    firstName = ""
-                    lastName = ""
+                    username = ""
                     repeatPassword = ""
 
                     authViewModel.login(email, password)

@@ -39,6 +39,16 @@ class AuthViewModel : ViewModel() {
     private val _userData = MutableLiveData<Result<User>>()
     val userData: LiveData<Result<User>> get() = _userData
 
+    /*
+    private val _updateUserData = MutableLiveData<Result<Boolean>>()
+    val updateUserData: LiveData<Result<Boolean>> get() = _updateUserData
+     */
+
+    private val _updateUserData = MutableLiveData<Result<User>>()
+    val updateUserData: LiveData<Result<User>> get() = _updateUserData
+
+
+
     fun login(email: String, password: String) {
         viewModelScope.launch {
             _authResult.value = userRepository.login(email, password)
@@ -46,9 +56,9 @@ class AuthViewModel : ViewModel() {
         }
     }
 
-    fun signUp(email: String, password: String, firstName: String, lastName: String) {
+    fun signUp(email: String, password: String, username: String) {
         viewModelScope.launch {
-            _authResult.value = userRepository.signUp(email, password, firstName, lastName)
+            _authResult.value = userRepository.signUp(email, password, username)
             checkLoginStatus()
         }
     }
@@ -71,11 +81,20 @@ class AuthViewModel : ViewModel() {
             checkLoginStatus()
         }
     }
+
     fun getUserData() {
         viewModelScope.launch {
-            _userData.value = userRepository.getUserData()
-            userRepository.getUserData()
+            val result = userRepository.getUserData()
+            _userData.value = result
         }
     }
+
+    fun updateUserData(user: User) {
+        viewModelScope.launch {
+            _updateUserData.value = userRepository.updateUserData(user)
+        }
+    }
+
+
 
 }
