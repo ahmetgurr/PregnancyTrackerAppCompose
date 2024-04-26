@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.ahmetgur.pregnancytracker.R
+import com.ahmetgur.pregnancytracker.data.Baby
 import com.ahmetgur.pregnancytracker.util.Util
 import com.ahmetgur.pregnancytracker.util.Util.showLogoutDialog
 import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel
@@ -75,15 +76,24 @@ fun AccountView(
     var dueDate by remember { mutableStateOf("") }
     var babyName by remember { mutableStateOf("") }
     var babyWeight by remember { mutableStateOf("") }
+    var babyGender by remember { mutableStateOf("") }
+    var babyBirthDate by remember { mutableStateOf("") }
 
-    // ViewModel'dan kullanıcı verilerini al, textlerin içine yerleştir
+    // Fetch user data when logged in
     LaunchedEffect(key1 = authViewModel.isLoggedIn()) {
         if (authViewModel.isLoggedIn()) {
             authViewModel.getUserData()
         }
     }
+    // Fetch baby data when logged in
+    LaunchedEffect(key1 = authViewModel.isLoggedIn()) {
+        if (authViewModel.isLoggedIn()) {
+            authViewModel.getBabyData()
+        }
+    }
 
     val userData = authViewModel.userData.observeAsState()
+    val babyData = authViewModel.babyData.observeAsState()
 
     // Update fields when user data is fetched
     LaunchedEffect(key1 = userData.value) {
@@ -105,9 +115,33 @@ fun AccountView(
         }
     }
 
+    // Update fields when baby data is fetched
+    LaunchedEffect(key1 = babyData.value) {
+        when (val result = babyData.value) {
+            is Result.Success -> {
+                val baby = result.data
+                dueDate = baby.dueDate
+                babyName = baby.name
+                babyWeight = baby.weight
+                babyBirthDate = baby.birthDate
+                babyGender = baby.gender
+            }
+            is Result.Error -> {
+                Log.e("AccountView", "Error getting baby data: ${result.exception.message}", result.exception)
+            }
+            else -> {
+                Log.d("AccountView", "Loading baby data")}
+        }
+    }
+
     val onUpdateInformationClick: () -> Unit = {
         val updatedUser = User(username, email, phone, weight, height, age)
         authViewModel.updateUserData(updatedUser)
+    }
+
+    val onUpdateBabyDataClick: () -> Unit = {
+        val updatedBaby = Baby(dueDate = dueDate, name = babyName, weight = babyWeight, birthDate = babyBirthDate, gender = babyGender)
+        authViewModel.updateBabyData(updatedBaby)
     }
 
 
@@ -139,8 +173,12 @@ fun AccountView(
             onHeightChange = { height = it },
             onAgeChange = { age = it },
             onUpdateInformationClick = {
-                onUpdateInformationClick()
-                Toast.makeText(context, "Information updated", Toast.LENGTH_SHORT).show()
+                if (username.isNotEmpty() && email.isNotEmpty() && phone.isNotEmpty() && weight.isNotEmpty() && height.isNotEmpty() && age.isNotEmpty()) {
+                    onUpdateInformationClick()
+                    Toast.makeText(context, "Information updated", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "Please fill all fields", Toast.LENGTH_SHORT).show()
+                }
             }
 
         ){
@@ -154,14 +192,31 @@ fun AccountView(
             babyName = babyName,
             babyWeight = babyWeight,
             dueDate = dueDate,
-            babyGender = "",
+            babyBirthDate = babyBirthDate,
+            babyGender = babyGender,
             onBabyNameChange = { babyName = it },
             onBabyWeightChange = { babyWeight = it },
             onDueDateChange = { dueDate = it },
+            onBabyBirthDateChange = { babyBirthDate = it },
             onBabyGenderChange = {  },
-            onUpdateInformationClick = { //TODO: updateInformationInFirestore(username, email, phone)
+            onUpdateInformationClick = {
+                onUpdateBabyDataClick()
+                Toast.makeText(context, "Information updated", Toast.LENGTH_SHORT).show()
+                Log.d("onSaveBabyInformation", "Baby information saved CLİCKED")
             }
         )
+
+        TextButton(
+            modifier = Modifier.padding(top = 32.dp),
+            onClick = {},
+            content = {
+                Text(
+                    text = "Add new baby information",
+                    color = colorScheme.primary
+                )
+            },
+        )
+
 
     }
 
@@ -342,10 +397,12 @@ fun InformationCardBaby(
     dueDate: String,
     babyName: String,
     babyWeight: String,
+    babyBirthDate: String,
     babyGender: String,
     onDueDateChange: (String) -> Unit,
     onBabyNameChange: (String) -> Unit,
     onBabyWeightChange: (String) -> Unit,
+    onBabyBirthDateChange: (String) -> Unit,
     onBabyGenderChange: (String) -> Unit,
     onUpdateInformationClick: () -> Unit,
 ) {
@@ -408,6 +465,18 @@ fun InformationCardBaby(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
 
+            // babyBirthDate TextField
+            OutlinedTextField(
+                value = babyBirthDate,
+                onValueChange = onBabyBirthDateChange,
+                label = { Text("Baby's birth date") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
+
+
             // babyGender TextField
             OutlinedTextField(
                 value = selectedGender.value,
@@ -454,7 +523,6 @@ fun InformationCardBaby(
                     )
                 },
             )
-
         }
     }
 }

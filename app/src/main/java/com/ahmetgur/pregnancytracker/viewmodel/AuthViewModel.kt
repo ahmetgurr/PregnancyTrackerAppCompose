@@ -1,5 +1,6 @@
 package com.ahmetgur.pregnancytracker.viewmodel
 
+import android.util.Log
 import com.ahmetgur.pregnancytracker.data.Result
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.ahmetgur.pregnancytracker.Injection
+import com.ahmetgur.pregnancytracker.data.Baby
 import com.ahmetgur.pregnancytracker.data.Note
 import com.ahmetgur.pregnancytracker.data.User
 import com.ahmetgur.pregnancytracker.data.UserRepository
@@ -39,13 +41,11 @@ class AuthViewModel : ViewModel() {
     private val _userData = MutableLiveData<Result<User>>()
     val userData: LiveData<Result<User>> get() = _userData
 
-    /*
-    private val _updateUserData = MutableLiveData<Result<Boolean>>()
-    val updateUserData: LiveData<Result<Boolean>> get() = _updateUserData
-     */
-
     private val _updateUserData = MutableLiveData<Result<User>>()
     val updateUserData: LiveData<Result<User>> get() = _updateUserData
+
+    private val _babyData = MutableLiveData<Result<Baby>>()
+    val babyData: LiveData<Result<Baby>> get() = _babyData
 
 
 
@@ -92,6 +92,19 @@ class AuthViewModel : ViewModel() {
     fun updateUserData(user: User) {
         viewModelScope.launch {
             _updateUserData.value = userRepository.updateUserData(user)
+        }
+    }
+
+    fun updateBabyData(baby: Baby) {
+        viewModelScope.launch {
+            userRepository.updateBabyData(baby)
+        }
+    }
+
+    fun getBabyData() {
+        viewModelScope.launch {
+            val result = userRepository.getBabyData()
+            _babyData.value = result
         }
     }
 
