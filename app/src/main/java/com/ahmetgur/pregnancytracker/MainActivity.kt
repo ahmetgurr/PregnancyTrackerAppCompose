@@ -34,6 +34,7 @@ import com.ahmetgur.pregnancytracker.screen.login.RegisterScreen
 import com.ahmetgur.pregnancytracker.screen.login.ResetScreen
 import com.ahmetgur.pregnancytracker.ui.theme.PregnancyTrackerTheme
 import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel
+import com.ahmetgur.pregnancytracker.viewmodel.BabyViewModel
 import com.ahmetgur.pregnancytracker.viewmodel.CategoryViewModel
 import com.ahmetgur.pregnancytracker.viewmodel.NoteViewModel
 
@@ -73,7 +74,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Navigation(
     navController: NavHostController,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    babyViewModel: BabyViewModel
 ) {
     val categoryViewModel: CategoryViewModel = viewModel()
     val viewstate by categoryViewModel.categoriesState
@@ -127,7 +129,7 @@ fun Navigation(
 
         // Account View Screen
         composable(Screen.DrawerScreen.Account.route) {
-            AccountView(authViewModel = authViewModel, navController = navController)
+            AccountView(authViewModel = authViewModel, babyViewModel = babyViewModel, navController = navController)
         }
 
         // Subscription Screen

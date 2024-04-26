@@ -59,6 +59,7 @@ import com.ahmetgur.pregnancytracker.screensInBottom
 import com.ahmetgur.pregnancytracker.screensInDrawer
 import com.ahmetgur.pregnancytracker.util.Util.logoutAndNavigateToLogin
 import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel
+import com.ahmetgur.pregnancytracker.viewmodel.BabyViewModel
 import com.ahmetgur.pregnancytracker.viewmodel.MainViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -83,6 +84,8 @@ fun MainView() {
     val currentRoute = navBackStackEntry?.destination?.route
 
     val authViewModel: AuthViewModel = viewModel()
+
+    val babyViewModel: BabyViewModel = viewModel()
 
     val dialogOpen = remember {
         mutableStateOf(false)
@@ -218,7 +221,7 @@ fun MainView() {
 
         ) {
 
-            Navigation(navController = navController, authViewModel = authViewModel)
+            Navigation(navController = navController, authViewModel = authViewModel, babyViewModel = babyViewModel)
 
             AccountDialog(dialogOpen = dialogOpen)
 

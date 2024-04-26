@@ -54,13 +54,14 @@ import com.ahmetgur.pregnancytracker.util.Util.showLogoutDialog
 import com.ahmetgur.pregnancytracker.viewmodel.AuthViewModel
 import com.ahmetgur.pregnancytracker.data.Result
 import com.ahmetgur.pregnancytracker.data.User
-import java.text.SimpleDateFormat
+import com.ahmetgur.pregnancytracker.viewmodel.BabyViewModel
 import java.util.*
 
 @SuppressLint("SuspiciousIndentation")
 @Composable
 fun AccountView(
     authViewModel: AuthViewModel,
+    babyViewModel: BabyViewModel,
     navController: NavController
 ) {
     val showDialog = remember { mutableStateOf(false) }
@@ -86,14 +87,14 @@ fun AccountView(
         }
     }
     // Fetch baby data when logged in
-    LaunchedEffect(key1 = authViewModel.isLoggedIn()) {
-        if (authViewModel.isLoggedIn()) {
-            authViewModel.getBabyData()
+    LaunchedEffect(key1 = babyViewModel.isLoggedIn) {
+        if (babyViewModel.isLoggedIn()) {
+            babyViewModel.getBabyData()
         }
     }
 
     val userData = authViewModel.userData.observeAsState()
-    val babyData = authViewModel.babyData.observeAsState()
+    val babyData = babyViewModel.babyData.observeAsState()
 
     // Update fields when user data is fetched
     LaunchedEffect(key1 = userData.value) {
@@ -141,7 +142,7 @@ fun AccountView(
 
     val onUpdateBabyDataClick: () -> Unit = {
         val updatedBaby = Baby(dueDate = dueDate, name = babyName, weight = babyWeight, birthDate = babyBirthDate, gender = babyGender)
-        authViewModel.updateBabyData(updatedBaby)
+        babyViewModel.updateBabyData(updatedBaby)
     }
 
 
@@ -432,7 +433,6 @@ fun InformationCardBaby(
                         .padding(8.dp)
                 )
             }
-
             // dueDate TextField
             OutlinedTextField(
                 value = dueDate,
@@ -441,7 +441,7 @@ fun InformationCardBaby(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             )
 
             // BabyName TextField
